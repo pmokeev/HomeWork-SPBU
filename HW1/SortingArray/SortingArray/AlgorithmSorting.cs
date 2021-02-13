@@ -4,11 +4,11 @@ namespace SortingArray
 {
     class AlgorithmSorting
     {
-        public static int[] BubbleSort(int[] currentArray)
+        public static void BubbleSort(int[] currentArray)
         {
             if (currentArray.Length == 0)
             {
-                return currentArray;
+                return;
             }
             for (int i = 0; i < currentArray.Length; i++)
             {
@@ -22,8 +22,6 @@ namespace SortingArray
                     }
                 }
             }
-
-            return currentArray;
         }
     }
 }

@@ -24,22 +24,22 @@ namespace SortingArray
 
         private static bool CorrectTestCase()
         {
-            const int sizeArray = 5;
+            var startArray = new int[] { 35, 55, 66, 2, 79 };
+            var endArray = new int[] { 2, 35, 55, 66, 79 };
 
-            var startArray = new int[sizeArray] { 35, 55, 66, 2, 79 };
-            var endArray = new int[sizeArray] { 2, 35, 55, 66, 79 };
+            AlgorithmSorting.BubbleSort(startArray);
 
-            return IsSimilarArrays(AlgorithmSorting.BubbleSort(startArray), endArray);
+            return IsSimilarArrays(startArray, endArray);
         }
 
         private static bool UncorrectTestCase()
         {
-            const int sizeArray = 10;
+            var startArray = new int[] { 55, 59, 12, 31, 34, 47, 42, 71, 29, 38 };
+            var endArray = new int[] { 55, 59, 12, 31, 34, 47, 42, 71, 29, 38 };
 
-            var startArray = new int[sizeArray] { 55, 59, 12, 31, 34, 47, 42, 71, 29, 38 };
-            var endArray = new int[sizeArray] { 55, 59, 12, 31, 34, 47, 42, 71, 29, 38 };
+            AlgorithmSorting.BubbleSort(startArray);
 
-            return IsSimilarArrays(AlgorithmSorting.BubbleSort(startArray), endArray);
+            return IsSimilarArrays(startArray, endArray);
         }
 
         private static bool EmptyArrayTest()
@@ -49,17 +49,19 @@ namespace SortingArray
             var startArray = new int[sizeArray];
             var endArray = new int[sizeArray];
 
-            return IsSimilarArrays(AlgorithmSorting.BubbleSort(startArray), endArray);
+            AlgorithmSorting.BubbleSort(startArray);
+
+            return IsSimilarArrays(startArray, endArray);
         }
 
         private static bool OneElementTest()
         {
-            const int sizeArray = 1;
+            var startArray = new int[] { 1 };
+            var endArray = new int[] { 1 };
 
-            var startArray = new int[sizeArray] { 1 };
-            var endArray = new int[sizeArray] { 1 };
+            AlgorithmSorting.BubbleSort(startArray);
 
-            return IsSimilarArrays(AlgorithmSorting.BubbleSort(startArray), endArray);
+            return IsSimilarArrays(startArray, endArray);
         }
 
         public static bool AllTestsCase()

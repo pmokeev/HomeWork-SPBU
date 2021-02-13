@@ -4,7 +4,7 @@ namespace SortingArray
 {
     class Program
     {
-        public static int EntrySize()
+        private static int EntrySize()
         {
             int sizeArray = -1;
             while (true)
@@ -34,7 +34,7 @@ namespace SortingArray
 
             Console.WriteLine("Enter size of array:");
 
-            int sizeArray = EntrySize();
+            var sizeArray = EntrySize();
 
             Random random = new Random();
 
@@ -47,7 +47,7 @@ namespace SortingArray
                 Console.Write($"{mainArray[i]} ");
             }
 
-            mainArray = AlgorithmSorting.BubbleSort(mainArray);
+            AlgorithmSorting.BubbleSort(mainArray);
 
             Console.WriteLine("\nRezult array:");
             foreach (int element in mainArray)
