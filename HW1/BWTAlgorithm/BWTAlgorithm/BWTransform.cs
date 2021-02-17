@@ -2,18 +2,104 @@
 
 namespace BWTAlgorithm
 {
+    public interface IComparable
+    {
+        int CompareTo(object secondComp);
+    }
+
+    public class Suffix : IComparable<Suffix>
+    {
+        public int index;
+        public int rank;
+        public int next;
+        public Suffix(int newIndex, int newRank, int newNextRank)
+        {
+            index = newIndex;
+            rank = newRank;
+            next = newNextRank;
+        }
+
+        public int CompareTo(Suffix secondSuf)
+        {
+            if (this.rank != secondSuf.rank)
+            {
+                return this.rank.CompareTo(secondSuf.rank);
+            }
+            return this.next.CompareTo(secondSuf.next);
+        }
+    }
+
     class BWTransform
     {
-        private static string[] CreateSuffixArray(string currentString)
+        private static int[] SuffixArray(string curString)
         {
-            var suffixArray = new string[currentString.Length];
+            int n = curString.Length;
+            Suffix[] suffixesArray = new Suffix[n];
 
-            for (int i = 0; i < currentString.Length; i++)
+            for (int i = 0; i < n; i++)
             {
-                suffixArray[i] = currentString.Substring(i);
+                suffixesArray[i] = new Suffix(i, curString[i] - 'a', 0);
             }
 
-            return suffixArray;
+            for (int i = 0; i < n; i++)
+            {
+                if (i + 1 < n)
+                {
+                    suffixesArray[i].next = suffixesArray[i + 1].rank;
+                }
+                else
+                {
+                    suffixesArray[i].next = -1;
+                }
+            }
+
+            Array.Sort(suffixesArray);
+
+            int[] ind = new int[n];
+
+            for (int length = 4; length < 2 * n; length <<= 1)
+            {
+                int rank = 0;
+                int prevRank = suffixesArray[0].rank;
+                suffixesArray[0].rank = rank;
+                ind[suffixesArray[0].index] = 0;
+
+                for (int i = 1; i < n; i++)
+                {
+                    if (suffixesArray[i].rank == prevRank && suffixesArray[i].next == suffixesArray[i - 1].next)
+                    {
+                        prevRank = suffixesArray[i].rank;
+                        suffixesArray[i].rank = rank;
+                    }
+                    else
+                    {
+                        prevRank = suffixesArray[i].rank;
+                        suffixesArray[i].rank = ++rank;
+                    }
+                    ind[suffixesArray[i].index] = i;
+                }
+                for (int i = 0; i < n; i++)
+                {
+                    int nextPoint = suffixesArray[i].index + length / 2;
+                    if (nextPoint < n)
+                    {
+                        suffixesArray[i].next = suffixesArray[ind[nextPoint]].rank;
+                    }
+                    else
+                    {
+                        suffixesArray[i].next = -1;
+                    }
+                }
+                Array.Sort(suffixesArray);
+            }
+            var resultArray = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                resultArray[i] = suffixesArray[i].index;
+
+            }
+            return resultArray;
         }
 
         public static string StraightBWT(string currentString)
@@ -25,14 +111,13 @@ namespace BWTAlgorithm
 
             currentString += "$";
             var lenStartString = currentString.Length;
-            string[] suffixArray = CreateSuffixArray(currentString);
-            Array.Sort(suffixArray);
+            int[] suffixArray = SuffixArray(currentString);
 
             var resultString = "";
 
             foreach (var element in suffixArray)
             {
-                resultString += currentString[(2 * lenStartString - element.Length - 1) % lenStartString];
+                resultString += currentString[(element + lenStartString - 1) % lenStartString];
             }
 
             return resultString;
