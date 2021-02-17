@@ -138,24 +138,23 @@ namespace BWTAlgorithm
             return counter + 1;
         }
 
-        private static string[,] StringCounterArray(char[] charArray)
+        private static Tuple<string, int>[] StringCounterArray(char[] charArray)
         {
-            var mainArray = new string[charArray.Length, 2];
+            var mainArray = new Tuple<string, int>[charArray.Length];
 
             for (int i = 0; i < charArray.Length; i++)
             {
-                mainArray[i, 0] = Convert.ToString(charArray[i]);
-                mainArray[i, 1] = Convert.ToString(CountElement(charArray, charArray[i], i));
+                mainArray[i] = new Tuple<string, int>(Convert.ToString(charArray[i]), CountElement(charArray, charArray[i], i));
             }
 
             return mainArray;
         }
 
-        private static int IndexInArray(string[,] mainArray, string symbol, string indexSymbol)
+        private static int IndexInArray(Tuple<string, int>[] mainArray, string symbol, int indexSymbol)
         {
             for (int i = 0; i < mainArray.Length; i++)
             {
-                if (mainArray[i, 0] == symbol && mainArray[i, 1] == indexSymbol)
+                if (mainArray[i].Item1 == symbol && mainArray[i].Item2 == indexSymbol)
                 {
                     return i;
                 }
@@ -176,14 +175,14 @@ namespace BWTAlgorithm
             Array.Copy(mainArray, sortedMainArray, currentString.Length);
             Array.Sort(sortedMainArray);
 
-            string[,] stringMainArray = StringCounterArray(mainArray);
-            string[,] stringSortedMainArray = StringCounterArray(sortedMainArray);
+            Tuple<string, int>[] stringMainArray = StringCounterArray(mainArray);
+            Tuple<string, int>[] stringSortedMainArray = StringCounterArray(sortedMainArray);
 
             var resultString = "";
             var currentSymbol = "$";
-            var indexSymbol = "1";
-            string nextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol), 0];
-            string indexNextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol), 1];
+            int indexSymbol = 1;
+            string nextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol)].Item1;
+            int indexNextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol)].Item2;
 
             while (nextSymbol[0] != '$')
             {
@@ -191,8 +190,8 @@ namespace BWTAlgorithm
 
                 currentSymbol = nextSymbol;
                 indexSymbol = indexNextSymbol;
-                nextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol), 0];
-                indexNextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol), 1];
+                nextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol)].Item1;
+                indexNextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol)].Item2;
             }
 
             return resultString;
