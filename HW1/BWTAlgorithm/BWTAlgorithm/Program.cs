@@ -8,7 +8,7 @@ namespace BWTAlgorithm
         {
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("1 - encode message");
-            Console.WriteLine("2 - dencode message");
+            Console.WriteLine("2 - decode message");
             Console.WriteLine("Enter key");
         }
 
@@ -55,6 +55,7 @@ namespace BWTAlgorithm
                 Console.WriteLine("Result string:");
                 Console.WriteLine(BWTransform.ReverseBWT(currentString));
             }
+
         }
     }
 }

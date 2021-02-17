@@ -138,16 +138,30 @@ namespace BWTAlgorithm
             return counter + 1;
         }
 
-        private static string[] StringCounterArray(char[] charArray)
+        private static string[,] StringCounterArray(char[] charArray)
         {
-            var lenArray = charArray.Length;
-            var stringArray = new string[lenArray];
-            for (int i = 0; i < lenArray; i++)
+            var mainArray = new string[charArray.Length, 2];
+
+            for (int i = 0; i < charArray.Length; i++)
             {
-                stringArray[i] = Convert.ToString(charArray[i]) + Convert.ToString(CountElement(charArray, charArray[i], i));
+                mainArray[i, 0] = Convert.ToString(charArray[i]);
+                mainArray[i, 1] = Convert.ToString(CountElement(charArray, charArray[i], i));
             }
 
-            return stringArray;
+            return mainArray;
+        }
+
+        private static int IndexInArray(string[,] mainArray, string symbol, string indexSymbol)
+        {
+            for (int i = 0; i < mainArray.Length; i++)
+            {
+                if (mainArray[i, 0] == symbol && mainArray[i, 1] == indexSymbol)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
         public static string ReverseBWT(string currentString)
@@ -162,19 +176,23 @@ namespace BWTAlgorithm
             Array.Copy(mainArray, sortedMainArray, currentString.Length);
             Array.Sort(sortedMainArray);
 
-            var stringMainArray = StringCounterArray(mainArray);
-            var stringSortedMainArray = StringCounterArray(sortedMainArray);
+            string[,] stringMainArray = StringCounterArray(mainArray);
+            string[,] stringSortedMainArray = StringCounterArray(sortedMainArray);
 
             var resultString = "";
-            var currentSymbol ="$1";
-            var nextSymbol = stringSortedMainArray[Array.IndexOf(stringMainArray, currentSymbol)];
+            var currentSymbol = "$";
+            var indexSymbol = "1";
+            string nextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol), 0];
+            string indexNextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol), 1];
 
             while (nextSymbol[0] != '$')
             {
-                resultString += Convert.ToString(nextSymbol[0]);
+                resultString += nextSymbol;
 
                 currentSymbol = nextSymbol;
-                nextSymbol = stringSortedMainArray[Array.IndexOf(stringMainArray, currentSymbol)];
+                indexSymbol = indexNextSymbol;
+                nextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol), 0];
+                indexNextSymbol = stringSortedMainArray[IndexInArray(stringMainArray, currentSymbol, indexSymbol), 1];
             }
 
             return resultString;
