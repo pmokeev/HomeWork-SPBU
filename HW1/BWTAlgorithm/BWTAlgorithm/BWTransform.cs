@@ -72,10 +72,9 @@ namespace BWTAlgorithm
                 return currentString;
             }
 
-            var lenString = currentString.Length;
             char[] mainArray = currentString.ToCharArray();
-            var sortedMainArray = new char[lenString];
-            Array.Copy(mainArray, sortedMainArray, lenString);
+            var sortedMainArray = new char[currentString.Length];
+            Array.Copy(mainArray, sortedMainArray, currentString.Length);
             Array.Sort(sortedMainArray);
 
             var stringMainArray = StringCounterArray(mainArray);
@@ -94,14 +93,6 @@ namespace BWTAlgorithm
             }
 
             return resultString;
-        }
-
-        public static void PrintHello()
-        {
-            Console.WriteLine("What do you want to do?");
-            Console.WriteLine("1 - encode message");
-            Console.WriteLine("2 - dencode message");
-            Console.WriteLine("Enter key");
         }
     }
 }

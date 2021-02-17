@@ -4,6 +4,14 @@ namespace BWTAlgorithm
 {
     class Program
     {
+        private static void PrintHello()
+        {
+            Console.WriteLine("What do you want to do?");
+            Console.WriteLine("1 - encode message");
+            Console.WriteLine("2 - dencode message");
+            Console.WriteLine("Enter key");
+        }
+
         private static int EnterKey()
         {
             int keyInput = 0;
@@ -28,7 +36,7 @@ namespace BWTAlgorithm
                 return;
             }
 
-            BWTransform.PrintHello();
+            PrintHello();
             var key = EnterKey();
 
             if (key == 1)

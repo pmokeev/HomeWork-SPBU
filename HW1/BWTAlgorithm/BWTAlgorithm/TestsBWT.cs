@@ -9,15 +9,15 @@ namespace BWTAlgorithm
             var startString = "banana";
             var endString = "annb$aa";
 
-            return String.Compare(BWTransform.StraightBWT(startString), endString) == 0;
+            return BWTransform.StraightBWT(startString) == endString;
         }
 
-        private static bool UncorrectTestCase()
+        private static bool IncorrectTestCase()
         {
             var startString = "abrakadabra";
             var endString = "ar$dkraaabab";
 
-            return String.Compare(BWTransform.StraightBWT(startString), endString) == 0;
+            return BWTransform.StraightBWT(startString) == endString;
         }
 
         private static bool NullTestCase()
@@ -25,7 +25,7 @@ namespace BWTAlgorithm
             var startString = "";
             var endString = "";
 
-            return String.Compare(BWTransform.StraightBWT(startString), endString) == 0;
+            return BWTransform.StraightBWT(startString) == endString;
         }
 
         private static bool OneSymbolTestCase()
@@ -33,7 +33,7 @@ namespace BWTAlgorithm
             var startString = "a";
             var endString = "a$";
 
-            return String.Compare(BWTransform.StraightBWT(startString), endString) == 0;
+            return BWTransform.StraightBWT(startString) == endString;
         }
 
         private static bool OneCharTestCase()
@@ -41,7 +41,7 @@ namespace BWTAlgorithm
             var startString = "bbbbbbbbbbbbbbbbbb";
             var endString = "bbbbbbbbbbbbbbbbbb$";
 
-            return String.Compare(BWTransform.StraightBWT(startString), endString) == 0;
+            return BWTransform.StraightBWT(startString) == endString;
         }
 
         private static bool SentenceEncodeTestCase()
@@ -49,28 +49,26 @@ namespace BWTAlgorithm
             var startString = "а роза упала на лапу азора";
             var endString = "уааааанл$зр плоаа  рзуао п ";
 
-            return String.Compare(BWTransform.StraightBWT(startString), endString) == 0;
+            return BWTransform.StraightBWT(startString) == endString;
         }
 
         public static bool AllTestsCaseBWT()
-        {
-            return CorrectTestCase() && !UncorrectTestCase() && NullTestCase() && OneSymbolTestCase() && OneCharTestCase() && SentenceEncodeTestCase();
-        }
+            => CorrectTestCase() && !IncorrectTestCase() && NullTestCase() && OneSymbolTestCase() && OneCharTestCase() && SentenceEncodeTestCase();
 
         private static bool CorrectTestCaseReverse()
         {
             var startString = "annb$aa";
             var endString = "banana";
 
-            return String.Compare(BWTransform.ReverseBWT(startString), endString) == 0;
+            return BWTransform.ReverseBWT(startString) == endString;
         }
 
-        private static bool UncorrectTestCaseReverse()
+        private static bool IncorrectTestCaseReverse()
         {
             var startString = "ard$kraaaabb";
             var endString = "abrakabadra";
 
-            return String.Compare(BWTransform.ReverseBWT(startString), endString) == 0;
+            return BWTransform.ReverseBWT(startString) == endString;
         }
 
         private static bool NullTestCaseReverse()
@@ -78,7 +76,7 @@ namespace BWTAlgorithm
             var startString = "";
             var endString = "";
 
-            return String.Compare(BWTransform.ReverseBWT(startString), endString) == 0;
+            return BWTransform.ReverseBWT(startString) == endString;
         }
 
         private static bool OneSymbolTestCaseReverse()
@@ -86,7 +84,7 @@ namespace BWTAlgorithm
             var startString = "a$";
             var endString = "a";
 
-            return String.Compare(BWTransform.ReverseBWT(startString), endString) == 0;
+            return BWTransform.ReverseBWT(startString) == endString;
         }
 
         private static bool SentenceDecodeTestCase()
@@ -94,12 +92,10 @@ namespace BWTAlgorithm
             var startString = "уааааанл$зр плоаа  рзуао п ";
             var endString = "а роза упала на лапу азора";
 
-            return String.Compare(BWTransform.ReverseBWT(startString), endString) == 0;
+            return BWTransform.ReverseBWT(startString) == endString;
         }
 
         public static bool AllTestsCaseBWTReverse()
-        {
-            return CorrectTestCaseReverse() && !UncorrectTestCaseReverse() && NullTestCaseReverse() && OneSymbolTestCaseReverse() && SentenceDecodeTestCase();
-        }
+            => CorrectTestCaseReverse() && !IncorrectTestCaseReverse() && NullTestCaseReverse() && OneSymbolTestCaseReverse() && SentenceDecodeTestCase();
     }
 }
