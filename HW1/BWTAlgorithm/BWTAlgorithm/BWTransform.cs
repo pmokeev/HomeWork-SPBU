@@ -31,14 +31,14 @@ namespace BWTAlgorithm
 
     class BWTransform
     {
-        private static int[] SuffixArray(string curString)
+        private static int[] SuffixArray(string currentString)
         {
-            var lenString = curString.Length;
+            var lenString = currentString.Length;
             var suffixesArray = new Suffix[lenString];
 
             for (int i = 0; i < lenString; i++)
             {
-                suffixesArray[i] = new Suffix(i, curString[i] - 'a', 0);
+                suffixesArray[i] = new Suffix(i, currentString[i] - 'a', 0);
             }
 
             for (int i = 0; i < lenString; i++)
