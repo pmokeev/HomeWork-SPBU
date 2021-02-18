@@ -37,7 +37,7 @@ namespace BWTAlgorithm
             }
 
             PrintHello();
-            var key = EnterKey();
+            int key = EnterKey();
 
             if (key == 1)
             {

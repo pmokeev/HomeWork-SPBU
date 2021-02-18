@@ -4,28 +4,28 @@ namespace BWTAlgorithm
 {
     public interface IComparable
     {
-        int CompareTo(object secondComp);
+        int CompareTo(object element);
     }
 
-    public class Suffix : IComparable<Suffix>
+    class Suffix : IComparable<Suffix>
     {
         public int index;
         public int rank;
-        public int next;
+        public int nextRank;
         public Suffix(int newIndex, int newRank, int newNextRank)
         {
             index = newIndex;
             rank = newRank;
-            next = newNextRank;
+            nextRank = newNextRank;
         }
 
-        public int CompareTo(Suffix secondSuf)
+        public int CompareTo(Suffix secondSuffix)
         {
-            if (this.rank != secondSuf.rank)
+            if (this.rank != secondSuffix.rank)
             {
-                return this.rank.CompareTo(secondSuf.rank);
+                return this.rank.CompareTo(secondSuffix.rank);
             }
-            return this.next.CompareTo(secondSuf.next);
+            return this.nextRank.CompareTo(secondSuffix.nextRank);
         }
     }
 
@@ -33,68 +33,70 @@ namespace BWTAlgorithm
     {
         private static int[] SuffixArray(string curString)
         {
-            int n = curString.Length;
-            Suffix[] suffixesArray = new Suffix[n];
+            var lenString = curString.Length;
+            var suffixesArray = new Suffix[lenString];
 
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < lenString; i++)
             {
                 suffixesArray[i] = new Suffix(i, curString[i] - 'a', 0);
             }
 
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < lenString; i++)
             {
-                if (i + 1 < n)
+                if (i + 1 < lenString)
                 {
-                    suffixesArray[i].next = suffixesArray[i + 1].rank;
+                    suffixesArray[i].nextRank = suffixesArray[i + 1].rank;
                 }
                 else
                 {
-                    suffixesArray[i].next = -1;
+                    suffixesArray[i].nextRank = -1;
                 }
             }
 
             Array.Sort(suffixesArray);
 
-            int[] ind = new int[n];
+            var indexes = new int[lenString];
 
-            for (int length = 4; length < 2 * n; length <<= 1)
+            for (int length = 4; length < 2 * lenString; length <<= 1)
             {
-                int rank = 0;
-                int prevRank = suffixesArray[0].rank;
-                suffixesArray[0].rank = rank;
-                ind[suffixesArray[0].index] = 0;
+                var currentRank = 0;
+                int preventRank = suffixesArray[0].rank;
+                suffixesArray[0].rank = currentRank;
+                indexes[suffixesArray[0].index] = 0;
 
-                for (int i = 1; i < n; i++)
+                for (int i = 1; i < lenString; i++)
                 {
-                    if (suffixesArray[i].rank == prevRank && suffixesArray[i].next == suffixesArray[i - 1].next)
+                    if (suffixesArray[i].rank == preventRank && suffixesArray[i].nextRank == suffixesArray[i - 1].nextRank)
                     {
-                        prevRank = suffixesArray[i].rank;
-                        suffixesArray[i].rank = rank;
+                        preventRank = suffixesArray[i].rank;
+                        suffixesArray[i].rank = currentRank;
                     }
                     else
                     {
-                        prevRank = suffixesArray[i].rank;
-                        suffixesArray[i].rank = ++rank;
+                        preventRank = suffixesArray[i].rank;
+                        suffixesArray[i].rank = ++currentRank;
                     }
-                    ind[suffixesArray[i].index] = i;
+
+                    indexes[suffixesArray[i].index] = i;
                 }
-                for (int i = 0; i < n; i++)
+
+                for (int i = 0; i < lenString; i++)
                 {
-                    int nextPoint = suffixesArray[i].index + length / 2;
-                    if (nextPoint < n)
+                    var nextPoint = suffixesArray[i].index + length / 2;
+                    if (nextPoint < lenString)
                     {
-                        suffixesArray[i].next = suffixesArray[ind[nextPoint]].rank;
+                        suffixesArray[i].nextRank = suffixesArray[indexes[nextPoint]].rank;
                     }
                     else
                     {
-                        suffixesArray[i].next = -1;
+                        suffixesArray[i].nextRank = -1;
                     }
                 }
                 Array.Sort(suffixesArray);
             }
-            var resultArray = new int[n];
+            var resultArray = new int[lenString];
 
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < lenString; i++)
             {
                 resultArray[i] = suffixesArray[i].index;
 
