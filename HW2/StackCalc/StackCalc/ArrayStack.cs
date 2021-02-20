@@ -1,32 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StackCalc
 {
     class ArrayStack : IStack
     {
-        private float[] stackArray = new float[0];
+        private float[] stackArray = new float[2];
+        private int currentIndex = 0;
 
         public void Push(float element)
         {
-            Array.Resize(ref stackArray, stackArray.Length + 1);
-            stackArray[stackArray.Length - 1] = element;
+            if (stackArray.Length <= currentIndex)
+            {
+                Array.Resize(ref stackArray, stackArray.Length * 2);
+            }
+
+            stackArray[currentIndex++] = element;
         }
 
         public float Pop()
         {
             if (IsEmpty())
             {
-                throw new Exception("Stack is empty");
+                throw new InvalidOperationException("Stack is empty");
             }
 
-            var popElement = stackArray[stackArray.Length - 1];
-            Array.Resize(ref stackArray, stackArray.Length - 1);
+            if (currentIndex >= 1)
+            {
+                currentIndex--;
+            }
+
+            var popElement = stackArray[currentIndex];
             return popElement;
         }
 
         public bool IsEmpty()
-            => stackArray.Length == 0;
+            => currentIndex == 0;
     }
 }

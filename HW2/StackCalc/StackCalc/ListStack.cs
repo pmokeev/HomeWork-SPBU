@@ -25,7 +25,7 @@ namespace StackCalc
         {
             if (IsEmpty())
             {
-                throw new Exception("Stack is empty");
+                throw new InvalidOperationException("Stack is empty");
             }
 
             var popElement = head.element;
