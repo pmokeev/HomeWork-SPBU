@@ -41,7 +41,7 @@ namespace StackCalc
 
         static void Main(string[] args)
         {
-            if (!TestsCalc.ListAllTestsCase() || !TestsCalc.ArrayAllTestsCase())
+            if (!TestsCalc.AllTestsCase())
             {
                 Console.WriteLine("Error!");
                 return;
@@ -51,16 +51,8 @@ namespace StackCalc
             int key = EntryKey();
             Console.WriteLine("Enter the string to calculate:");
             string expression = EnterExpression();
-            Calculator calculatorStack;
 
-            if (key == 1)
-            {
-                calculatorStack = new Calculator(new ListStack());
-            }
-            else
-            {
-                calculatorStack = new Calculator(new ArrayStack());
-            }
+            var calculatorStack = new Calculator(key == 1 ? new ListStack() : new ArrayStack());
 
             try
             {
@@ -70,7 +62,7 @@ namespace StackCalc
             {
                 Console.WriteLine("Error. Division by zero!");
             }
-            catch (StackOverflowException)
+            catch (ArithmeticException)
             {
                 Console.WriteLine("Operations are less than numbers");
             }

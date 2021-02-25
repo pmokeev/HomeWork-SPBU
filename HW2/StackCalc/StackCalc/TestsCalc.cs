@@ -4,91 +4,53 @@ namespace StackCalc
 {
     class TestsCalc
     {
-        private static bool ListStackCorrectTestCase()
+        private static bool CorrectTestCase()
         {
-            var calculatorStack = new Calculator(new ListStack());
+            var listCalc = new Calculator(new ListStack());
+            var arrayCalc = new Calculator(new ArrayStack());
             var expression = "1 2 3 + *";
 
-            return 5 == calculatorStack.Calculate(expression);
+
+            return 5 == listCalc.Calculate(expression) && 5 == arrayCalc.Calculate(expression);
         }
 
-        private static bool ListStackIncorrectTestCase()
+        private static bool IncorrectTestCase()
         {
-            var calculatorStack = new Calculator(new ListStack());
+            var listCalc = new Calculator(new ListStack());
+            var arrayCalc = new Calculator(new ArrayStack());
             var expression = "1 2 +";
 
-            return 4 == calculatorStack.Calculate(expression);
+            return 4 == listCalc.Calculate(expression) && 4 == arrayCalc.Calculate(expression);
         }
 
-        private static bool ListStackOneNumberTestCase()
+        private static bool OneNumberTestCase()
         {
-            var calculatorStack = new Calculator(new ListStack());
+            var listCalc = new Calculator(new ListStack());
+            var arrayCalc = new Calculator(new ArrayStack());
             var expression = "1";
 
-            return 1 == calculatorStack.Calculate(expression);
+            return 1 == listCalc.Calculate(expression) && 1 == arrayCalc.Calculate(expression);
         }
 
-        private static bool ListStackHardTestCase()
+        private static bool HardTestCase()
         {
-            var calculatorStack = new Calculator(new ListStack());
+            var listCalc = new Calculator(new ListStack());
+            var arrayCalc = new Calculator(new ArrayStack());
             var expression = "100 54 23 * + 10 2 / - 11 +";
 
-            return 1348 == calculatorStack.Calculate(expression);
+            return 1348 == listCalc.Calculate(expression) && 1348 == arrayCalc.Calculate(expression);
         }
 
-        private static bool ListStackMistakeOfThePastTestCase()
+        private static bool MistakeOfThePastTestCase()
         {
-            var calculatorStack = new Calculator(new ListStack());
+            var listCalc = new Calculator(new ListStack());
+            var arrayCalc = new Calculator(new ArrayStack());
             var expression = "5 0 -";
 
-            return 5 == calculatorStack.Calculate(expression);
+            return 5 == listCalc.Calculate(expression) && 5 == arrayCalc.Calculate(expression);
         }
 
-        public static bool ListAllTestsCase()
-            => ListStackCorrectTestCase() && !ListStackIncorrectTestCase() && ListStackOneNumberTestCase() && ListStackHardTestCase() && ListStackMistakeOfThePastTestCase();
-
-        private static bool ArrayStackCorrectTestCase()
-        {
-            var calculatorStack = new Calculator(new ArrayStack());
-            var expression = "1 2 3 + *";
-
-            return 5 == calculatorStack.Calculate(expression);
-        }
-
-        private static bool ArrayStackIncorrectTestCase()
-        {
-            var calculatorStack = new Calculator(new ArrayStack());
-            var expression = "1 2 +";
-
-            return 4 == calculatorStack.Calculate(expression);
-        }
-
-        private static bool ArrayStackOneNumberTestCase()
-        {
-            var calculatorStack = new Calculator(new ArrayStack());
-            var expression = "1";
-
-            return 1 == calculatorStack.Calculate(expression);
-        }
-
-        private static bool ArrayStackHardTestCase()
-        {
-            var calculatorStack = new Calculator(new ArrayStack());
-            var expression = "100 54 23 * + 10 2 / - 11 +";
-
-            return 1348 == calculatorStack.Calculate(expression);
-        }
-
-        private static bool ArrayStackMistakeOfThePastTestCase()
-        {
-            var calculatorStack = new Calculator(new ArrayStack());
-            var expression = "5 0 -";
-
-            return 5 == calculatorStack.Calculate(expression);
-        }
-
-        public static bool ArrayAllTestsCase()
-            => ArrayStackCorrectTestCase() && !ArrayStackIncorrectTestCase() && ArrayStackOneNumberTestCase() && ArrayStackHardTestCase() && ArrayStackMistakeOfThePastTestCase();
-
+        public static bool AllTestsCase()
+            => CorrectTestCase() && !IncorrectTestCase() && OneNumberTestCase() && HardTestCase() && MistakeOfThePastTestCase();
     }
 }

@@ -21,11 +21,11 @@ namespace StackCalc
 
         public double Calculate(string expressionToCalculate)
         {
-            int numberToPush;
-            string[] expressionArray = expressionToCalculate.Split(" ");
+            string[] expressionArray = expressionToCalculate.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var element in expressionArray)
             {
+                int numberToPush;
                 if (Int32.TryParse(element, out numberToPush))
                 {
                     stack.Push(numberToPush);
@@ -74,7 +74,7 @@ namespace StackCalc
 
             if (!stack.IsEmpty())
             {
-                throw new StackOverflowException();
+                throw new ArithmeticException();
             }
 
             return answerExpression;

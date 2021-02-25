@@ -14,7 +14,8 @@ namespace StackCalc
                 Array.Resize(ref stackArray, stackArray.Length * 2);
             }
 
-            stackArray[currentIndex++] = element;
+            stackArray[currentIndex] = element;
+            currentIndex++;
         }
 
         public float Pop()
