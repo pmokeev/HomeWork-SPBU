@@ -9,17 +9,20 @@ namespace LZWProgram
         {
             public Hashtable hashArray { get; set; }
             public int CurrentValue { get; set; }
+            public HashTrieNode ParentNode{ get; set; }
 
             public HashTrieNode()
             {
                 CurrentValue = -1;
                 hashArray = new Hashtable();
+                ParentNode = null;
             }
 
             public HashTrieNode(int currentValue)
             {
                 CurrentValue = currentValue;
                 hashArray = new Hashtable();
+                ParentNode = null;
             }
         }
 
@@ -28,6 +31,7 @@ namespace LZWProgram
         public void Insert(byte newByte, int currentValue)
         {
             var newNode = new HashTrieNode(currentValue);
+            newNode.ParentNode = root;
             root.hashArray.Add(newByte, newNode);
         }
 
@@ -39,5 +43,11 @@ namespace LZWProgram
 
         public int GetValue()
             => root.CurrentValue;
+
+        public bool HasParent()
+            => root.ParentNode == null;
+
+        public int GetValueOfParent()
+            => root.ParentNode.CurrentValue;
     }
 }

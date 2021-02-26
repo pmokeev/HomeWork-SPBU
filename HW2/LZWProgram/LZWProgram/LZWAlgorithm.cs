@@ -3,7 +3,7 @@ using System.IO;
 
 namespace LZWProgram
 {
-    class LZWAlgorithm
+    public class LZWAlgorithm
     {
         private static HashTrie FillStartHashArray()
         {
@@ -17,6 +17,11 @@ namespace LZWProgram
             return root;
         }
 
+        private static void WriteInFile(FileStream fileOut, HashTrie node, int newIndex)
+        {
+            return;
+        }
+
         public static void Compress(string pathToFile)
         {
             string resultPath = pathToFile + ".zipped";
@@ -27,7 +32,7 @@ namespace LZWProgram
                 {
                     HashTrie root = FillStartHashArray();
                     HashTrie pointer = root;
-                    int countableIndex = 0;
+                    int countableIndex = 256;
 
                     for (int byteIndex = 0; byteIndex < fileIn.Length; byteIndex++)
                     {
@@ -46,7 +51,7 @@ namespace LZWProgram
                             }
                             else
                             {
-                                // Запись countableIndex текущего байта в файл 
+                                WriteInFile(fileOut, pointer, pointer.GetValueOfParent());
                                 countableIndex++;
                                 pointer.Insert(currentByte, countableIndex);
                                 pointer = root;
