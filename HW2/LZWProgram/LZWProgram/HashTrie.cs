@@ -3,71 +3,41 @@ using System.Collections;
 
 namespace LZWProgram
 {
-    class HashTrie
+    public class HashTrie
     {
         private class HashTrieNode
         {
-            public bool endOfWord;
-            public Hashtable hashArray;
+            public Hashtable hashArray { get; set; }
+            public int CurrentValue { get; set; }
 
             public HashTrieNode()
             {
-                this.endOfWord = false;
-                this.hashArray = new Hashtable();
+                CurrentValue = -1;
+                hashArray = new Hashtable();
+            }
+
+            public HashTrieNode(int currentValue)
+            {
+                CurrentValue = currentValue;
+                hashArray = new Hashtable();
             }
         }
 
-        private HashTrieNode root = new HashTrieNode();
+        private HashTrieNode root;
 
-        public void Insert(string currentString)
+        public void Insert(byte newByte, int currentValue)
         {
-            if (currentString.Length == 0)
-            {
-                return;
-            }
-
-            HashTrieNode currentNode = root;
-
-            for (int i = 0; i < currentString.Length; i++)
-            {
-                var node = (HashTrieNode)currentNode.hashArray[currentString[i]];
-
-                if (node == null)
-                {
-                    node = new HashTrieNode();
-                    currentNode.hashArray.Add(currentString[i], node);
-                }
-
-                currentNode = node;
-            }
-
-            currentNode.endOfWord = true;
+            var newNode = new HashTrieNode(currentValue);
+            root.hashArray.Add(newByte, newNode);
         }
 
-        public bool IsExist(string currentString)
-        {
-            if (root == null || currentString.Length == 0)
-            {
-                return false;
-            }
+        public bool HasChild(byte currentByte)
+            => root.hashArray.ContainsKey(currentByte);
 
-            HashTrieNode currentNode = root;
+        public void GetChild(byte currentByte)
+            => root = (HashTrieNode)root.hashArray[currentByte];
 
-            for (int i = 0; i < currentString.Length; i++)
-            {
-                var node = (HashTrieNode)currentNode.hashArray[currentString[i]];
-
-                if (node == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    currentNode = node;
-                }
-            }
-
-            return currentNode.endOfWord == true;
-        }
+        public int GetValue()
+            => root.CurrentValue;
     }
 }
