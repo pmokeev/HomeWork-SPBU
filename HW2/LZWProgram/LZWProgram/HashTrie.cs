@@ -26,7 +26,7 @@ namespace LZWProgram
             }
         }
 
-        private HashTrieNode root;
+        private HashTrieNode root = new HashTrieNode();
 
         public void Insert(byte newByte, int currentValue)
         {

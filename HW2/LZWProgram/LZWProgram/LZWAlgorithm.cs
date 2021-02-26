@@ -17,9 +17,16 @@ namespace LZWProgram
             return root;
         }
 
-        private static void WriteInFile(FileStream fileOut, HashTrie node, int newIndex)
+        private static void WriteInFile(FileStream fileOut, HashTrie node)
         {
-            return;
+            int valueToWrite = node.HasParent() ? node.GetValueOfParent() : node.GetValue();
+            byte[] intBytes = BitConverter.GetBytes(valueToWrite);
+            Array.Reverse(intBytes);
+            byte[] bytes = intBytes;
+            foreach (var b in bytes)
+            {
+                fileOut.WriteByte(b);
+            }
         }
 
         public static void Compress(string pathToFile)
@@ -33,15 +40,14 @@ namespace LZWProgram
                     HashTrie root = FillStartHashArray();
                     HashTrie pointer = root;
                     int countableIndex = 256;
+                    int counterBytes = 1;
+                    byte currentByte = (byte)fileIn.ReadByte();
 
-                    for (int byteIndex = 0; byteIndex < fileIn.Length; byteIndex++)
+                    while (counterBytes != fileIn.Length)
                     {
-                        byte currentByte = (byte)fileIn.ReadByte();
-
-                        if (byteIndex == fileIn.Length - 1)
+                        if (counterBytes == fileIn.Length - 1)
                         {
-                            // Запись countableIndex в файл 
-                            continue;
+                            WriteInFile(fileOut, pointer);
                         }
                         else
                         {
@@ -51,12 +57,16 @@ namespace LZWProgram
                             }
                             else
                             {
-                                WriteInFile(fileOut, pointer, pointer.GetValueOfParent());
+                                WriteInFile(fileOut, pointer);
                                 countableIndex++;
                                 pointer.Insert(currentByte, countableIndex);
                                 pointer = root;
+                                continue;
                             }
                         }
+
+                        currentByte = (byte)fileIn.ReadByte();
+                        counterBytes++;
                     }
                 }
             }
