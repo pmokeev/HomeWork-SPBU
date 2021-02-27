@@ -19,13 +19,31 @@ namespace LZWProgram
 
         private static void WriteInFile(FileStream fileOut, HashTrie node)
         {
-            int valueToWrite = node.HasParent() ? node.GetValueOfParent() : node.GetValue();
+            int valueToWrite = node.GetValue();
             byte[] intBytes = BitConverter.GetBytes(valueToWrite);
             Array.Reverse(intBytes);
             byte[] bytes = intBytes;
-            foreach (var b in bytes)
+
+            if (valueToWrite == 0)
             {
-                fileOut.WriteByte(b);
+                fileOut.WriteByte((byte)0);
+            }
+            else
+            {
+                int startIndex = 0;
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    if (bytes[i] != (byte)0)
+                    {
+                        startIndex = i;
+                        break;
+                    }
+                }
+
+                for (int i = startIndex; i < bytes.Length; i++)
+                {
+                    fileOut.WriteByte((byte)bytes[i]);
+                }
             }
         }
 
@@ -33,42 +51,37 @@ namespace LZWProgram
         {
             string resultPath = pathToFile + ".zipped";
 
-            using (FileStream fileIn = File.OpenRead(pathToFile))
+            using FileStream fileIn = File.OpenRead(pathToFile);
+            using FileStream fileOut = File.OpenWrite(resultPath);
+            HashTrie root = FillStartHashArray();
+            int countableIndex = 256;
+            int counterBytes = 1;
+            byte currentByte = (byte)fileIn.ReadByte();
+
+            while (counterBytes != fileIn.Length)
             {
-                using (FileStream fileOut = File.OpenWrite(resultPath))
+            if (counterBytes == fileIn.Length - 1)
+            {
+                WriteInFile(fileOut, root);
+            }
+            else
+            {
+                if (root.HasChild(currentByte))
                 {
-                    HashTrie root = FillStartHashArray();
-                    HashTrie pointer = root;
-                    int countableIndex = 256;
-                    int counterBytes = 1;
-                    byte currentByte = (byte)fileIn.ReadByte();
-
-                    while (counterBytes != fileIn.Length)
-                    {
-                        if (counterBytes == fileIn.Length - 1)
-                        {
-                            WriteInFile(fileOut, pointer);
-                        }
-                        else
-                        {
-                            if (pointer.HasChild(currentByte))
-                            {
-                                pointer.GetChild(currentByte);
-                            }
-                            else
-                            {
-                                WriteInFile(fileOut, pointer);
-                                countableIndex++;
-                                pointer.Insert(currentByte, countableIndex);
-                                pointer = root;
-                                continue;
-                            }
-                        }
-
-                        currentByte = (byte)fileIn.ReadByte();
-                        counterBytes++;
-                    }
+                    root.GetChild(currentByte);
                 }
+                else
+                {
+                    WriteInFile(fileOut, root);
+                    countableIndex++;
+                    root.Insert(currentByte, countableIndex);
+                    root.GoToRoot();
+                    continue;
+                }
+             }
+
+            currentByte = (byte)fileIn.ReadByte();
+            counterBytes++;
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace LZWProgram
 {
@@ -6,11 +7,9 @@ namespace LZWProgram
     {
         static void Main(string[] args)
         {
-            if (!TestsLZW.AllTestsTrie())
-            {
-                Console.WriteLine("Error!");
-                return;
-            }
+            string path = "C:\\Users\\Pavel\\Documents\\HomeworkSPBU\\HW2\\LZWProgram\\LZWProgram\\test.txt";
+
+            LZWAlgorithm.Compress(path);
         }
     }
 }

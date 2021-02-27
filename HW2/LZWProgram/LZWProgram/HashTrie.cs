@@ -9,7 +9,7 @@ namespace LZWProgram
         {
             public Hashtable hashArray { get; set; }
             public int CurrentValue { get; set; }
-            public HashTrieNode ParentNode{ get; set; }
+            public HashTrieNode ParentNode { get; set; }
 
             public HashTrieNode()
             {
@@ -41,11 +41,16 @@ namespace LZWProgram
         public void GetChild(byte currentByte)
             => root = (HashTrieNode)root.hashArray[currentByte];
 
+        public void GoToRoot()
+        {
+            while (root.ParentNode != null)
+            {
+                root = root.ParentNode;
+            }
+        }
+
         public int GetValue()
             => root.CurrentValue;
-
-        public bool HasParent()
-            => root.ParentNode == null;
 
         public int GetValueOfParent()
             => root.ParentNode.CurrentValue;
