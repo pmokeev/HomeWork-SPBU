@@ -53,35 +53,35 @@ namespace LZWProgram
 
             using FileStream fileIn = File.OpenRead(pathToFile);
             using FileStream fileOut = File.OpenWrite(resultPath);
-            HashTrie root = FillStartHashArray();
+            HashTrie pointer = FillStartHashArray();
             int countableIndex = 256;
             int counterBytes = 1;
             byte currentByte = (byte)fileIn.ReadByte();
 
             while (counterBytes != fileIn.Length)
             {
-            if (counterBytes == fileIn.Length - 1)
-            {
-                WriteInFile(fileOut, root);
-            }
-            else
-            {
-                if (root.HasChild(currentByte))
+                if (counterBytes == fileIn.Length - 1)
                 {
-                    root.GetChild(currentByte);
+                    WriteInFile(fileOut, pointer);
                 }
                 else
                 {
-                    WriteInFile(fileOut, root);
-                    countableIndex++;
-                    root.Insert(currentByte, countableIndex);
-                    root.GoToRoot();
-                    continue;
-                }
-             }
+                    if (pointer.HasChild(currentByte))
+                    {
+                        pointer.GetChild(currentByte);
+                    }
+                    else
+                    {
+                        WriteInFile(fileOut, pointer);
+                        countableIndex++;
+                        pointer.Insert(currentByte, countableIndex);
+                        pointer.GoToRoot();
+                        continue;
+                    }
+                 }
 
-            currentByte = (byte)fileIn.ReadByte();
-            counterBytes++;
+                currentByte = (byte)fileIn.ReadByte();
+                counterBytes++;
             }
         }
     }
