@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace LZWProgram
 {
@@ -17,33 +19,14 @@ namespace LZWProgram
             return root;
         }
 
-        private static void WriteInFile(FileStream fileOut, HashTrie node)
+        private static void WriteInFile(FileStream fileOut, int valueToWrite)
         {
-            int valueToWrite = node.GetValue();
             byte[] intBytes = BitConverter.GetBytes(valueToWrite);
             Array.Reverse(intBytes);
-            byte[] bytes = intBytes;
 
-            if (valueToWrite == 0)
+            foreach (var item in intBytes)
             {
-                fileOut.WriteByte((byte)0);
-            }
-            else
-            {
-                int startIndex = 0;
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    if (bytes[i] != (byte)0)
-                    {
-                        startIndex = i;
-                        break;
-                    }
-                }
-
-                for (int i = startIndex; i < bytes.Length; i++)
-                {
-                    fileOut.WriteByte((byte)bytes[i]);
-                }
+                fileOut.WriteByte(item);
             }
         }
 
@@ -62,7 +45,7 @@ namespace LZWProgram
             {
                 if (counterBytes == fileIn.Length - 1)
                 {
-                    WriteInFile(fileOut, pointer);
+                    WriteInFile(fileOut, pointer.GetValue());
                 }
                 else
                 {
@@ -72,7 +55,7 @@ namespace LZWProgram
                     }
                     else
                     {
-                        WriteInFile(fileOut, pointer);
+                        WriteInFile(fileOut, pointer.GetValue());
                         countableIndex++;
                         pointer.Insert(currentByte, countableIndex);
                         pointer.GoToRoot();

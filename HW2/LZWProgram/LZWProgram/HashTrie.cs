@@ -7,21 +7,21 @@ namespace LZWProgram
     {
         private class HashTrieNode
         {
-            public Hashtable hashArray { get; set; }
+            public Hashtable HashArray { get; set; }
             public int CurrentValue { get; set; }
             public HashTrieNode ParentNode { get; set; }
 
             public HashTrieNode()
             {
                 CurrentValue = -1;
-                hashArray = new Hashtable();
+                HashArray = new Hashtable();
                 ParentNode = null;
             }
 
             public HashTrieNode(int currentValue)
             {
                 CurrentValue = currentValue;
-                hashArray = new Hashtable();
+                HashArray = new Hashtable();
                 ParentNode = null;
             }
         }
@@ -32,14 +32,14 @@ namespace LZWProgram
         {
             var newNode = new HashTrieNode(currentValue);
             newNode.ParentNode = root;
-            root.hashArray.Add(newByte, newNode);
+            root.HashArray.Add(newByte, newNode);
         }
 
         public bool HasChild(byte currentByte)
-            => root.hashArray.ContainsKey(currentByte);
+            => root.HashArray.ContainsKey(currentByte);
 
         public void GetChild(byte currentByte)
-            => root = (HashTrieNode)root.hashArray[currentByte];
+            => root = (HashTrieNode)root.HashArray[currentByte];
 
         public void GoToRoot()
         {
