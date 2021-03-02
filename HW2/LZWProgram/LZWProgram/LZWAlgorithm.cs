@@ -36,7 +36,7 @@ namespace LZWProgram
             using FileStream fileIn = File.OpenRead(pathToFile);
             using FileStream fileOut = File.OpenWrite(resultPath);
             HashTrie pointer = FillStartHashArray();
-            int countableIndex = 256;
+            int countableIndex = 255;
             int counterBytes = 1;
             byte currentByte = (byte)fileIn.ReadByte();
 
@@ -108,7 +108,7 @@ namespace LZWProgram
 
             Hashtable table = FillHashtable();
 
-            int countableIndex = 256;
+            int countableIndex = 255;
             int period = 4;
             byte firstByte = 0;
             byte[] bytesArray;
