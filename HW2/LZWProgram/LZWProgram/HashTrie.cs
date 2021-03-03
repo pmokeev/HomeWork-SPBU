@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace LZWProgram
 {
+    /// <summary>
+    /// Trie structure with hashtable
+    /// </summary>
     public class HashTrie
     {
         private class HashTrieNode
@@ -28,6 +31,11 @@ namespace LZWProgram
 
         private HashTrieNode root = new HashTrieNode();
 
+        /// <summary>
+        /// Insert in node of trie
+        /// </summary>
+        /// <param name="newByte">Byte to insert</param>
+        /// <param name="currentValue">Value\index to insert with byte</param>
         public void Insert(byte newByte, int currentValue)
         {
             var newNode = new HashTrieNode(currentValue);
@@ -35,12 +43,30 @@ namespace LZWProgram
             root.HashArray.Add(newByte, newNode);
         }
 
+        /// <summary>
+        /// Checking if the current node has a child with a given byte
+        /// </summary>
+        /// <param name="currentByte">Byte to check</param>
+        /// <returns>Is there a child</returns>
         public bool HasChild(byte currentByte)
             => root.HashArray.ContainsKey(currentByte);
 
+        /// <summary>
+        /// Get the node with the current byte
+        /// </summary>
+        /// <param name="currentByte">Byte by which you need to search for a child</param>
         public void GetChild(byte currentByte)
-            => root = (HashTrieNode)root.HashArray[currentByte];
+        {
+            if (!root.HashArray.ContainsKey(currentByte))
+            {
+                throw new InvalidOperationException("There is no node with such a byte");
+            }
+            root = (HashTrieNode)root.HashArray[currentByte];
+        }
 
+        /// <summary>
+        /// Returns the current pointer to the root
+        /// </summary>
         public void GoToRoot()
         {
             while (root.ParentNode != null)
@@ -49,9 +75,17 @@ namespace LZWProgram
             }
         }
 
+        /// <summary>
+        /// Get the value from the current node
+        /// </summary>
+        /// <returns>Value from the node</returns>
         public int GetValue()
             => root.CurrentValue;
 
+        /// <summary>
+        /// Get value from parent node
+        /// </summary>
+        /// <returns>Value from parent node</returns>
         public int GetValueOfParent()
             => root.ParentNode.CurrentValue;
     }

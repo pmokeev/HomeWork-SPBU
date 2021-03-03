@@ -18,7 +18,7 @@ namespace LZWProgram
             return root;
         }
 
-        private static void WriteInFile(FileStream fileOut, int valueToWrite)
+        private static void WriteInFileCompress(FileStream fileOut, int valueToWrite)
         {
             byte[] intBytes = BitConverter.GetBytes(valueToWrite);
             Array.Reverse(intBytes);
@@ -29,6 +29,10 @@ namespace LZWProgram
             }
         }
 
+        /// <summary>
+        /// Compress file, creating .zipped file
+        /// </summary>
+        /// <param name="pathToFile">Path to initial file</param>
         public static void Compress(string pathToFile)
         {
             string resultPath = pathToFile + ".zipped";
@@ -44,7 +48,7 @@ namespace LZWProgram
             {
                 if (counterBytes == fileIn.Length - 1)
                 {
-                    WriteInFile(fileOut, pointer.GetValue());
+                    WriteInFileCompress(fileOut, pointer.GetValue());
                 }
                 else
                 {
@@ -54,7 +58,7 @@ namespace LZWProgram
                     }
                     else
                     {
-                        WriteInFile(fileOut, pointer.GetValue());
+                        WriteInFileCompress(fileOut, pointer.GetValue());
                         countableIndex++;
                         pointer.Insert(currentByte, countableIndex);
                         pointer.GoToRoot();
@@ -69,17 +73,17 @@ namespace LZWProgram
 
         private static Hashtable FillHashtable()
         {
-            var table = new Hashtable();
+            var hashArray = new Hashtable();
 
             for (int i = 0; i < 256; i++)
             {
-                table.Add(i, new byte[] { (byte)i });
+                hashArray.Add(i, new byte[] { (byte)i });
             }
 
-            return table;
+            return hashArray;
         }
 
-        private static void WriteInOutFile(byte[] byteArray, FileStream fileOut)
+        private static void WriteInFileDecompress(byte[] byteArray, FileStream fileOut)
         {
             foreach (var item in byteArray)
             {
@@ -100,47 +104,49 @@ namespace LZWProgram
             return BitConverter.ToInt32(arrayBytes);
         }
 
+        /// <summary>
+        /// Decompress .zipped file
+        /// </summary>
+        /// <param name="pathToFile">Path to .zipped file</param>
         public static void Decompress(string pathToFile)
         {
             string resultPath = pathToFile.Substring(0, pathToFile.Length - 7);
             using FileStream fileIn = File.OpenRead(pathToFile);
             using FileStream fileOut = File.OpenWrite(resultPath);
 
-            Hashtable table = FillHashtable();
+            Hashtable hashArray = FillHashtable();
 
             int countableIndex = 255;
-            int period = 4;
+            int bytePerRead = 4;
             byte firstByte = 0;
             byte[] bytesArray;
 
             int oldKey = ReadKey(fileIn);
-            WriteInOutFile((byte[])table[oldKey], fileOut);
+            WriteInFileDecompress((byte[])hashArray[oldKey], fileOut);
 
-            for (int i = 4; i < fileIn.Length; i += period)
+            for (int i = 4; i < fileIn.Length; i += bytePerRead)
             {
                 int newKey = ReadKey(fileIn);
 
-                if (table.ContainsKey(newKey))
+                if (hashArray.ContainsKey(newKey))
                 {
-                    bytesArray = (byte[])table[newKey];
+                    bytesArray = (byte[])hashArray[newKey];
                 }
                 else
                 {
-                    bytesArray = (byte[])table[oldKey];
+                    bytesArray = (byte[])hashArray[oldKey];
                     Array.Resize(ref bytesArray, bytesArray.Length + 1);
                     bytesArray[bytesArray.Length - 1] = bytesArray[0];
                 }
 
-                WriteInOutFile(bytesArray, fileOut);
+                WriteInFileDecompress(bytesArray, fileOut);
 
                 firstByte = bytesArray[0];
-
-                byte[] oldByteArray = (byte[])table[oldKey];
-                Array.Resize(ref oldByteArray, oldByteArray.Length + 1);
-                oldByteArray[oldByteArray.Length - 1] = firstByte;
-
+                byte[] oldKeyArray = (byte[])hashArray[oldKey];
+                Array.Resize(ref oldKeyArray, oldKeyArray.Length + 1);
+                oldKeyArray[oldKeyArray.Length - 1] = firstByte;
                 countableIndex++;
-                table.Add(countableIndex, oldByteArray);
+                hashArray.Add(countableIndex, oldKeyArray);
 
                 oldKey = newKey;
             }
