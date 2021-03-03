@@ -4,6 +4,9 @@ using System.Collections;
 
 namespace LZWProgram
 {
+    /// <summary>
+    /// Class with compress and decompress
+    /// </summary>
     public class LZWAlgorithm
     {
         private static HashTrie FillStartHashArray()
@@ -44,9 +47,9 @@ namespace LZWProgram
             int counterBytes = 1;
             byte currentByte = (byte)fileIn.ReadByte();
 
-            while (counterBytes != fileIn.Length)
+            while (counterBytes != fileIn.Length + 2)
             {
-                if (counterBytes == fileIn.Length - 1)
+                if (counterBytes == fileIn.Length + 1)
                 {
                     WriteInFileCompress(fileOut, pointer.GetValue());
                 }
@@ -77,13 +80,14 @@ namespace LZWProgram
 
             for (int i = 0; i < 256; i++)
             {
-                hashArray.Add(i, new byte[] { (byte)i });
+                var byteArray = new byte[] { (byte)i };
+                hashArray.Add(i, byteArray);
             }
 
             return hashArray;
         }
 
-        private static void WriteInFileDecompress(byte[] byteArray, FileStream fileOut)
+        private static void WriteInFileDecompress(FileStream fileOut, byte[] byteArray)
         {
             foreach (var item in byteArray)
             {
@@ -118,14 +122,13 @@ namespace LZWProgram
 
             int countableIndex = 255;
             int bytePerRead = 4;
-            byte firstByte = 0;
-            byte[] bytesArray;
 
             int oldKey = ReadKey(fileIn);
-            WriteInFileDecompress((byte[])hashArray[oldKey], fileOut);
+            WriteInFileDecompress(fileOut, (byte[])hashArray[oldKey]);
 
             for (int i = 4; i < fileIn.Length; i += bytePerRead)
             {
+                byte[] bytesArray;
                 int newKey = ReadKey(fileIn);
 
                 if (hashArray.ContainsKey(newKey))
@@ -139,9 +142,9 @@ namespace LZWProgram
                     bytesArray[bytesArray.Length - 1] = bytesArray[0];
                 }
 
-                WriteInFileDecompress(bytesArray, fileOut);
+                WriteInFileDecompress(fileOut, bytesArray);
 
-                firstByte = bytesArray[0];
+                byte firstByte = bytesArray[0];
                 byte[] oldKeyArray = (byte[])hashArray[oldKey];
                 Array.Resize(ref oldKeyArray, oldKeyArray.Length + 1);
                 oldKeyArray[oldKeyArray.Length - 1] = firstByte;

@@ -59,7 +59,7 @@ namespace LZWProgram
         {
             if (!root.HashArray.ContainsKey(currentByte))
             {
-                throw new InvalidOperationException("There is no node with such a byte");
+                return;
             }
             root = (HashTrieNode)root.HashArray[currentByte];
         }
@@ -86,7 +86,21 @@ namespace LZWProgram
         /// Get value from parent node
         /// </summary>
         /// <returns>Value from parent node</returns>
-        public int GetValueOfParent()
-            => root.ParentNode.CurrentValue;
+        public int GetParentValue()
+        {
+            if (root.ParentNode == null)
+            {
+                throw new InvalidOperationException("Parent is null");
+            }
+
+            return root.ParentNode.CurrentValue;
+        }
+
+        /// <summary>
+        /// Is the current node empty
+        /// </summary>
+        /// <returns>Status of node</returns>
+        public bool IsEmptyNode()
+            => root.HashArray.Count == 0;
     }
 }
