@@ -43,9 +43,9 @@ namespace LZWProgram
             using FileStream fileIn = File.OpenRead(pathToFile);
             using FileStream fileOut = File.OpenWrite(resultPath);
             HashTrie pointer = FillStartHashArray();
-            int countableIndex = 255;
-            int counterBytes = 1;
-            byte currentByte = (byte)fileIn.ReadByte();
+            var countableIndex = 255;
+            var counterBytes = 1;
+            var currentByte = (byte)fileIn.ReadByte();
 
             while (counterBytes != fileIn.Length + 2)
             {
@@ -120,8 +120,8 @@ namespace LZWProgram
 
             Hashtable hashArray = FillHashtable();
 
-            int countableIndex = 255;
-            int bytePerRead = 4;
+            var countableIndex = 255;
+            var bytePerRead = 4;
 
             int oldKey = ReadKey(fileIn);
             WriteInFileDecompress(fileOut, (byte[])hashArray[oldKey]);
@@ -144,10 +144,10 @@ namespace LZWProgram
 
                 WriteInFileDecompress(fileOut, bytesArray);
 
-                byte firstByte = bytesArray[0];
-                byte[] oldKeyArray = (byte[])hashArray[oldKey];
+                byte firstByteNewKey = bytesArray[0];
+                var oldKeyArray = (byte[])hashArray[oldKey];
                 Array.Resize(ref oldKeyArray, oldKeyArray.Length + 1);
-                oldKeyArray[oldKeyArray.Length - 1] = firstByte;
+                oldKeyArray[oldKeyArray.Length - 1] = firstByteNewKey;
                 countableIndex++;
                 hashArray.Add(countableIndex, oldKeyArray);
 
