@@ -25,36 +25,32 @@ namespace StackCalc
 
             foreach (var element in expressionArray)
             {
-                int numberToPush;
-                if (Int32.TryParse(element, out numberToPush))
+                if (Int32.TryParse(element, out int numberToPush))
                 {
                     stack.Push(numberToPush);
                     continue;
                 }
 
+                var (element1, element2) = GetTwoElementsFromStack();
                 switch (element)
                 {
                     case "+":
                         {
-                            var (element1, element2) = GetTwoElementsFromStack();
                             stack.Push(element1 + element2);
                             break;
                         }
                     case "-":
                         {
-                            var (element1, element2) = GetTwoElementsFromStack();
                             stack.Push(element2 - element1);
                             break;
                         }
                     case "*":
                         {
-                            var (element1, element2) = GetTwoElementsFromStack();
                             stack.Push(element1 * element2);
                             break;
                         }
                     case "/":
                         {
-                            var (element1, element2) = GetTwoElementsFromStack();
                             if (Math.Abs(element1) < 0.0000001)
                             {
                                 throw new DivideByZeroException();

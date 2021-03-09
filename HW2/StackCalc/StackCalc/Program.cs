@@ -13,10 +13,9 @@ namespace StackCalc
 
         private static int EntryKey()
         {
-            var key = -1;
             while (true)
             {
-                if (!Int32.TryParse(Console.ReadLine(), out key) || (key != 1 && key != 2))
+                if (!Int32.TryParse(Console.ReadLine(), out int key) || (key != 1 && key != 2))
                 {
                     Console.WriteLine("Try again!");
                 }
