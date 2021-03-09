@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace LZWProgram
 {
@@ -10,26 +10,28 @@ namespace LZWProgram
     {
         private class HashTrieNode
         {
-            public Hashtable HashArray { get; set; }
+            public Dictionary<byte, HashTrieNode> Dictionary { get; set; }
             public int CurrentValue { get; set; }
             public HashTrieNode ParentNode { get; set; }
 
-            public HashTrieNode()
-            {
-                CurrentValue = -1;
-                HashArray = new Hashtable();
-                ParentNode = null;
-            }
-
             public HashTrieNode(int currentValue)
             {
+                Dictionary = new Dictionary<byte, HashTrieNode>();
                 CurrentValue = currentValue;
-                HashArray = new Hashtable();
                 ParentNode = null;
             }
         }
 
-        private HashTrieNode root = new HashTrieNode();
+        private HashTrieNode root = new HashTrieNode(-1);
+        private HashTrieNode cursor;
+
+        /// <summary>
+        /// Init hash trie
+        /// </summary>
+        public HashTrie()
+        {
+            cursor = root;
+        }
 
         /// <summary>
         /// Insert in node of trie
@@ -39,8 +41,8 @@ namespace LZWProgram
         public void Insert(byte newByte, int currentValue)
         {
             var newNode = new HashTrieNode(currentValue);
-            newNode.ParentNode = root;
-            root.HashArray.Add(newByte, newNode);
+            newNode.ParentNode = cursor;
+            cursor.Dictionary.Add(newByte, newNode);
         }
 
         /// <summary>
@@ -49,19 +51,19 @@ namespace LZWProgram
         /// <param name="currentByte">Byte to check</param>
         /// <returns>Is there a child</returns>
         public bool HasChild(byte currentByte)
-            => root.HashArray.ContainsKey(currentByte);
+            => cursor.Dictionary.ContainsKey(currentByte);
 
         /// <summary>
         /// Get the node with the current byte
         /// </summary>
         /// <param name="currentByte">Byte by which you need to search for a child</param>
-        public void GetChild(byte currentByte)
+        public void GoToChild(byte currentByte)
         {
-            if (!root.HashArray.ContainsKey(currentByte))
+            if (!cursor.Dictionary.ContainsKey(currentByte))
             {
                 return;
             }
-            root = (HashTrieNode)root.HashArray[currentByte];
+            cursor = cursor.Dictionary[currentByte];
         }
 
         /// <summary>
@@ -69,10 +71,7 @@ namespace LZWProgram
         /// </summary>
         public void GoToRoot()
         {
-            while (root.ParentNode != null)
-            {
-                root = root.ParentNode;
-            }
+            cursor = root;
         }
 
         /// <summary>
@@ -80,7 +79,7 @@ namespace LZWProgram
         /// </summary>
         /// <returns>Value from the node</returns>
         public int GetValue()
-            => root.CurrentValue;
+            => cursor.CurrentValue;
 
         /// <summary>
         /// Get value from parent node
@@ -88,12 +87,12 @@ namespace LZWProgram
         /// <returns>Value from parent node</returns>
         public int GetParentValue()
         {
-            if (root.ParentNode == null)
+            if (cursor.ParentNode == null)
             {
                 throw new InvalidOperationException("Parent is null");
             }
 
-            return root.ParentNode.CurrentValue;
+            return cursor.ParentNode.CurrentValue;
         }
 
         /// <summary>
@@ -101,6 +100,6 @@ namespace LZWProgram
         /// </summary>
         /// <returns>Status of node</returns>
         public bool IsEmptyNode()
-            => root.HashArray.Count == 0;
+            => cursor.Dictionary.Count == 0;
     }
 }

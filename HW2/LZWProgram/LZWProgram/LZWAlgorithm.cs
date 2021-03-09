@@ -57,7 +57,7 @@ namespace LZWProgram
                 {
                     if (pointer.HasChild(currentByte))
                     {
-                        pointer.GetChild(currentByte);
+                        pointer.GoToChild(currentByte);
                     }
                     else
                     {

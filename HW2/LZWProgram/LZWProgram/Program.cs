@@ -15,60 +15,48 @@ namespace LZWProgram
         static void Main(string[] args)
         {
             HelloMessage();
-            string enterString;
-            string[] paramsArray;
 
-            while (true)
+            if (args[0] != "-c" && args[0] != "-u" && args.Length != 2)
             {
-                enterString = Console.ReadLine();
-                paramsArray = enterString.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                if (paramsArray[0] != "-c" && paramsArray[0] != "-u")
-                {
-                    Console.WriteLine("Error! Please, try again.");
-                    HelloMessage();
-                }
-                else
-                {
-                    break;
-                }
+                Console.WriteLine("Error! Please, try again.");
             }
 
-            if (paramsArray[0] == "-c")
+            if (args[0] == "-c")
             {
-                if (!File.Exists(paramsArray[1]))
+                if (!File.Exists(args[1]))
                 {
                     Console.WriteLine("Error! File not found.");
                     return;
                 }
-                else if (File.Exists(paramsArray[1] + ".zipped"))
+                else if (File.Exists(args[1] + ".zipped"))
                 {
                     Console.WriteLine("Error! .zipped file already exists. Please, try again.");
                     return;
                 }
 
-                var startFile = new FileInfo(paramsArray[1]);
+                var startFile = new FileInfo(args[1]);
                 var startFileLength = (int)startFile.Length;
-                LZWAlgorithm.Compress(paramsArray[1]);
-                var compressedFile = new FileInfo(paramsArray[1] + ".zipped");
+                LZWAlgorithm.Compress(args[1]);
+                var compressedFile = new FileInfo(args[1] + ".zipped");
                 var compressedFileLength = (int)compressedFile.Length;
 
                 Console.WriteLine($"Compression ratio = {(float)startFileLength / compressedFileLength}");
                 Console.WriteLine("Done!");
             }
-            else if (paramsArray[0] == "-u")
+            else if (args[0] == "-u")
             {
-                if (!File.Exists(paramsArray[1]))
+                if (!File.Exists(args[1]))
                 {
                     Console.WriteLine("Error! File not found.");
                     return;
                 }
-                else if (File.Exists(paramsArray[1].Substring(0, paramsArray[1].Length - 7)))
+                else if (File.Exists(args[1].Substring(0, args[1].Length - 7)))
                 {
                     Console.WriteLine("Error! Uncompressed file already exists. Please, try again.");
                     return;
                 }
 
-                LZWAlgorithm.Decompress(paramsArray[1]);
+                LZWAlgorithm.Decompress(args[1]);
                 Console.WriteLine("Done!");
             }
         }

@@ -7,6 +7,7 @@ namespace TestsLZW
     public class TestsHashTrie
     {
         private HashTrie trie = new HashTrie();
+
         [TestMethod]
         public void InsertTest()
         {
@@ -29,7 +30,7 @@ namespace TestsLZW
         public void GetChildTest()
         {
             trie.Insert((byte)1, 1);
-            trie.GetChild((byte)1);
+            trie.GoToChild((byte)1);
 
             Assert.IsTrue(trie.IsEmptyNode());
         }
@@ -38,7 +39,7 @@ namespace TestsLZW
         public void GetChildFromNodeWithoutThisChildTest()
         {
             trie.Insert((byte)1, 1);
-            trie.GetChild((byte)2);
+            trie.GoToChild((byte)2);
 
             Assert.IsTrue(trie.HasChild((byte)1));
         }
@@ -56,9 +57,9 @@ namespace TestsLZW
         {
             trie.Insert((byte)1, 1);
             trie.Insert((byte)2, 1);
-            trie.GetChild((byte)2);
+            trie.GoToChild((byte)2);
             trie.Insert((byte)3, 1);
-            trie.GetChild((byte)3);
+            trie.GoToChild((byte)3);
             trie.GoToRoot();
 
             Assert.IsTrue(trie.HasChild((byte)1));
@@ -68,7 +69,7 @@ namespace TestsLZW
         public void GetValueTest()
         {
             trie.Insert((byte)1, 1);
-            trie.GetChild((byte)1);
+            trie.GoToChild((byte)1);
 
             Assert.AreEqual(1, trie.GetValue());
         }
@@ -83,9 +84,9 @@ namespace TestsLZW
         public void GetParentValueTest()
         {
             trie.Insert((byte)1, 1);
-            trie.GetChild((byte)1);
+            trie.GoToChild((byte)1);
             trie.Insert((byte)2, 2);
-            trie.GetChild((byte)2);
+            trie.GoToChild((byte)2);
 
             Assert.AreEqual(1, trie.GetParentValue());
         }
