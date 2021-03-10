@@ -20,24 +20,44 @@ namespace UniqueListNumber
         }
 
         private NodeList head;
-        private NodeList endCursor;
 
         /// <summary>
         /// Insert value in List
         /// </summary>
         /// <param name="value">Inserted value</param>
-        public virtual void Insert(int value)
+        public virtual void Insert(int value, int index)
         {
+            if (index > GetSize() || index < 0)
+            {
+                throw new IndexOutOfRangeException();
+            }
+
             var newNode = new NodeList(value);
+            
             if (head == null)
             {
                 head = newNode;
-                endCursor = head;
             }
             else
             {
-                endCursor.NextNode = newNode;
-                endCursor = endCursor.NextNode;
+                var currentIndex = 1;
+                NodeList cursor = head;
+
+                while (cursor.NextNode != null)
+                {
+                    if (currentIndex == index)
+                    {
+                        newNode.NextNode = cursor.NextNode;
+                        cursor.NextNode = newNode;
+                        return;
+                    }
+
+                    currentIndex++;
+                    cursor = cursor.NextNode;
+                }
+
+                newNode.NextNode = cursor.NextNode;
+                cursor.NextNode = newNode;
             }
         }
 
@@ -47,7 +67,7 @@ namespace UniqueListNumber
         public int GetSize()
         {
             NodeList cursor = head;
-            int size = 0;
+            var size = 0;
 
             while (cursor != null)
             {
@@ -61,6 +81,7 @@ namespace UniqueListNumber
         /// <summary>
         /// Checking the presence of the value in list
         /// </summary>
+        /// <param name="value">value to check</param>
         public bool IsExistValue(int value)
         {
             NodeList cursor = head;
@@ -81,10 +102,11 @@ namespace UniqueListNumber
         /// <summary>
         /// Getting value in list by index
         /// </summary>
+        /// <param name="index">Searchable index</param>
         public int GetValueByIndex(int index)
         {
             NodeList cursor = head;
-
+            
             while (cursor != null && index != 0)
             {
                 cursor = cursor.NextNode;
@@ -97,10 +119,11 @@ namespace UniqueListNumber
         /// <summary>
         /// Getting index in list by value
         /// </summary>
+        /// <param name="value">Searchable value</param>
         public int GetIndexByValue(int value)
         {
             NodeList cursor = head;
-            int index = 0;
+            var index = 0;
 
             while (cursor != null)
             {
@@ -119,6 +142,7 @@ namespace UniqueListNumber
         /// <summary>
         /// Delete an item by value
         /// </summary>
+        /// <param name="value">Value to delete</param>
         public virtual void DeleteByValue(int value)
         {
             if (head.Value == value)
@@ -149,6 +173,7 @@ namespace UniqueListNumber
         /// <summary>
         /// Delete an item by index
         /// </summary>
+        /// <param name="index">Index to delete</param>
         public virtual void DeleteByIndex(int index)
         {
             if (index == 0)
@@ -181,7 +206,32 @@ namespace UniqueListNumber
 
             while (cursor != null)
             {
-                Console.WriteLine($"{cursor.Value} ");
+                Console.Write($"{cursor.Value} ");
+                cursor = cursor.NextNode;
+            }
+        }
+
+        /// <summary>
+        /// Set a new value at the specified position
+        /// </summary>
+        public virtual void SetValueByIndex(int value, int index)
+        {
+            if (index > GetSize() || index < 0)
+            {
+                throw new IndexOutOfRangeException();
+            }
+
+            NodeList cursor = head;
+            var currentIndex = 0;
+
+            while (cursor != null)
+            {
+                if (index == currentIndex)
+                {
+                    cursor.Value = value;
+                }
+
+                currentIndex++;
                 cursor = cursor.NextNode;
             }
         }

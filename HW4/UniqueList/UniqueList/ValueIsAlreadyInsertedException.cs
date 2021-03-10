@@ -2,6 +2,9 @@
 
 namespace UniqueListNumber
 {
+    /// <summary>
+    /// Exception to exclude duplicates in the unique list
+    /// </summary>
     public class ValueIsAlreadyInsertedException : Exception
     {
         public ValueIsAlreadyInsertedException()

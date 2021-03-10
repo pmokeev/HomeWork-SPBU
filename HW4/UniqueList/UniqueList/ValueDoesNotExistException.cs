@@ -2,6 +2,9 @@
 
 namespace UniqueListNumber
 {
+    /// <summary>
+    /// Exception to delete non-existent items in a unique list
+    /// </summary>
     public class ValueDoesNotExistException : Exception
     {
         public ValueDoesNotExistException()

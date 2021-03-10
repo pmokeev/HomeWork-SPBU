@@ -6,8 +6,7 @@ namespace UniqueListNumber
     {
         static void Main(string[] args)
         {
-            UniqueList list = new UniqueList();
-
+            
         }
     }
 }
