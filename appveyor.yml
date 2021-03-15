@@ -1,10 +1,15 @@
 image: Visual Studio 2019
 
+environment:
+  matrix:
+      - SOLUTION: HW1/BWTAlgorithm/BWTAlgorithm.sln
+      - SOLUTION: HW1/SortingArray/SortingArray.sln
+
 before_build:
-    - For /R %%I in (*.sln) do nuget restore %%I
+    - nuget restore %SOLUTION%
     
 build_script:
-    - For /R %%I in (*.sln) do dotnet build %%I
+    - msbuild %SOLUTION%
     
 test_script:
-    - For /R %%I in (*.sln) do dotnet test %%I
+    - dotnet test %SOLUTION%
