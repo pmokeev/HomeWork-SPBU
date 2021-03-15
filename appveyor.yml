@@ -10,4 +10,4 @@ build_script:
     - dotnet build %SOLUTION%
     
 test_script:
-  - dotnet test %SOLUTION%
+    - dotnet test %SOLUTION%
