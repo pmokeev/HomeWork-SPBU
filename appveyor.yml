@@ -8,8 +8,8 @@ environment:
 before_build:
     - nuget restore %SOLUTION%
     
-build_script:
-    - dotnet build %SOLUTION%
+build:
+    project: %SOLUTION%
     
 test_script:
     - dotnet test %SOLUTION%
