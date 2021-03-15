@@ -1,4 +1,6 @@
-﻿namespace StackCalc
+﻿using System;
+
+namespace StackCalc
 {
     /// <summary>
     /// Interface describing basic stack commands
