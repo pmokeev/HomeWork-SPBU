@@ -8,6 +8,16 @@ before_build:
 
 build:
     - For /R %%I in (*.sln) do dotnet build %%I
-
+    
+env:
+    - SOLUTION: HW1/BWTAlgorithm/BWTAlgorithm.sln
+    - SOLUTION: HW1/SortingArray/SortingArray.sln
+    - SOLUTION: HW2/LZWProgram/LZWProgram.sln
+    - SOLUTION: HW2/StackCalc/StackCalc.sln
+    - SOLUTION: HW3/BTreeImplementation/BTreeImplementation.sln
+    - SOLUTION: HW4/ArithmeticTree/ArithmeticTree.sln
+    - SOLUTION: HW4/UniqueList/UniqueList.sln
+    - SOLUTION: HW5/StackCalc/StackCalc.sln
+    
 script:
-    - For /R %%I in (*.sln) do dotnet test %%I
+    - dotnet test $SOLUTION
