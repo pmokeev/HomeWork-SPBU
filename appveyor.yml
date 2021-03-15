@@ -4,10 +4,10 @@ environment:
   - SOLUTION: HW1/SortingArray/SortingArray.sln
 
 before_build:
-    - nuget restore %SOLUTION
+    - nuget restore %SOLUTION%
     
 build_script: 
-    - dotnet build %SOLUTION
+    - dotnet build %SOLUTION%
     
 test_script:
-    - dotnet test %SOLUTION
+    - dotnet test %SOLUTION%
