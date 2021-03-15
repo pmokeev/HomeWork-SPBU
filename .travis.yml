@@ -1,7 +1,7 @@
 language: csharp
 
 mono: none
-dotnet: 5.0.4
+dotnet: 5.0.0
 
 before_build:
     - For /R %%I in (*.sln) do nuget restore %%I
