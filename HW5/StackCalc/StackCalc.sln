@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackCalc", "StackCalc\StackCalc.csproj", "{DE04FF30-A67B-4040-AECF-DA094879D4DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackCalcTests", "StackCalcTests\StackCalcTests.csproj", "{B7D56C3E-CDA5-4676-ACA2-8E5F99DBB5D2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE04FF30-A67B-4040-AECF-DA094879D4DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE04FF30-A67B-4040-AECF-DA094879D4DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE04FF30-A67B-4040-AECF-DA094879D4DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE04FF30-A67B-4040-AECF-DA094879D4DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7D56C3E-CDA5-4676-ACA2-8E5F99DBB5D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7D56C3E-CDA5-4676-ACA2-8E5F99DBB5D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7D56C3E-CDA5-4676-ACA2-8E5F99DBB5D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7D56C3E-CDA5-4676-ACA2-8E5F99DBB5D2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30CD765C-603F-4AAB-82CF-578A4B91EA1C}
+	EndGlobalSection
+EndGlobal
