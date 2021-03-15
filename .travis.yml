@@ -1,0 +1,13 @@
+language: csharp
+
+mono: none
+dotnet: 5.0.103
+
+before_build:
+    - For /R %%I in (*.sln) do nuget restore %%I
+
+build:
+    - For /R %%I in (*.sln) do dotnet build %%I
+
+script:
+    - For /R %%I in (*.sln) do dotnet test %%I
