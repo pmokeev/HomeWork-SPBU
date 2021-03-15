@@ -2,12 +2,6 @@ language: csharp
 
 mono: none
 dotnet: 5.0.103
-
-before_build:
-    - For /R %%I in (*.sln) do nuget restore %%I
-
-build:
-    - For /R %%I in (*.sln) do dotnet build %%I
     
 env:
     - SOLUTION: HW1/BWTAlgorithm/BWTAlgorithm.sln
