@@ -6,7 +6,7 @@ environment:
       - SOLUTION: HW1/SortingArray/SortingArray.sln
 
 before_build:
-    - nuget restore %SOLUTION%
+    - dotnet restore %SOLUTION%
     
 build_script:
     - msbuild %SOLUTION%
