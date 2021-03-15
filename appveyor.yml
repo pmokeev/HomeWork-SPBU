@@ -6,10 +6,10 @@ environment:
       - SOLUTION: HW1/SortingArray/SortingArray.sln
 
 before_build:
-    - For /R %%I in (*.sln) do nuget restore %%I
+    - nuget restore %SOLUTION%
     
 build_script:
-    - msbuild %SOLUTION%
+    - dotnet build %SOLUTION%
     
 test_script:
     - dotnet test %SOLUTION%
