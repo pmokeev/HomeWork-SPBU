@@ -4,4 +4,4 @@ mono: none
 dotnet: 5.0.103
     
 script:
-    - For /R %%I in (*.sln) do dotnet test %%I
+    - For /R %%I in *.sln do dotnet test %%I
