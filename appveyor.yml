@@ -1,15 +1,10 @@
-environment:
-  matrix:
-  - SOLUTION: HW1/BWTAlgorithm/BWTAlgorithm.sln
-  - SOLUTION: HW1/SortingArray/SortingArray.sln
-  - SOLUTION: HW5/StackCalcAppVeyor/StackCalcAppVeyor.sln
-  - SOLUTION: HW4/ArithmeticTree/ArithmeticTree.sln
+image: Visual Studio 2019
 
 before_build:
-    - nuget restore %SOLUTION%
+    - For /R %%I in (*.sln) do nuget restore %%I
     
-build_script: 
-    - dotnet build %SOLUTION%
+build_script:
+    - For /R %%I in (*.sln) do dotnet build %%I
     
 test_script:
-    - dotnet test %SOLUTION%
+    - For /R %%I in (*.sln) do dotnet test %%I
