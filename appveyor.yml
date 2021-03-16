@@ -1,0 +1,14 @@
+environment:
+  matrix:
+  - SOLUTION: HW1/BWTAlgorithm/BWTAlgorithm.sln
+  - SOLUTION: HW1/SortingArray/SortingArray.sln
+  - SOLUTION: HW5/StackCalcAppVeyor/StackCalcAppVeyor.sln
+
+before_build:
+    - nuget restore %SOLUTION%
+    
+build_script: 
+    - dotnet build %SOLUTION%
+    
+test_script:
+    - dotnet test %SOLUTION%
