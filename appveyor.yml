@@ -3,6 +3,7 @@ environment:
   - SOLUTION: HW1/BWTAlgorithm/BWTAlgorithm.sln
   - SOLUTION: HW1/SortingArray/SortingArray.sln
   - SOLUTION: HW5/StackCalcAppVeyor/StackCalcAppVeyor.sln
+  - SOLUTION: HW4/ArithmeticTree/ArithmeticTree.sln
 
 before_build:
     - nuget restore %SOLUTION%
