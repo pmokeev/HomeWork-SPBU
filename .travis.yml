@@ -3,11 +3,5 @@ language: csharp
 mono: none
 dotnet: 5.0.103
     
-env:
-    - SOLUTION: HW1/BWTAlgorithm/BWTAlgorithm.sln
-    - SOLUTION: HW1/SortingArray/SortingArray.sln
-    - SOLUTION: HW5/StackCalcAppVeyor/StackCalcAppVeyor.sln
-    - SOLUTION: HW4/ArithmeticTree/ArithmeticTree.sln
-    
 script:
-    - dotnet test $SOLUTION
+    - For /R %%I in (*.sln) do dotnet test %%I
