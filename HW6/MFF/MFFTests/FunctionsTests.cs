@@ -80,5 +80,15 @@ namespace MFFTests
 
             Assert.AreEqual(resultValue, Functions.Fold(testList, startValue, (acc, elem) => acc * elem));
         }
+
+        [Test]
+        public void StringFoldTest()
+        {
+            var testList = new List<string>() { "I ", "am ", "Groot" };
+            var startValue = "";
+            var resultValue = "I am Groot";
+
+            Assert.AreEqual(resultValue, Functions.Fold(testList, startValue, (acc, elem) => acc + elem));
+        }
     }
 }
