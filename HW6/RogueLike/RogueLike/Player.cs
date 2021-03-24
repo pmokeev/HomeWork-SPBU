@@ -29,10 +29,10 @@ namespace RogueLike
         /// <summary>
         /// Changing the position of the character to new
         /// </summary>
-        public void ChangePosition(int newPositionX, int newPositionY)
+        public void ChangePosition((int x, int y) newPositions)
         {
-            PositionX = newPositionX;
-            PositionY = newPositionY;
+            PositionX = newPositions.x;
+            PositionY = newPositions.y;
         }
     }
 }

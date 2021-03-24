@@ -7,8 +7,8 @@ namespace RogueLike
     /// </summary>
     public class Game
     {
-        private readonly bool[,] mainMap;
-        private readonly Player player;
+        public bool[,] mainMap { get; }
+        public Player player { get; }
 
         /// <summary>
         /// Game constructor, we get the map and position of the player
@@ -83,7 +83,7 @@ namespace RogueLike
             mainMap[player.PositionX, player.PositionY] = false;
             Console.SetCursorPosition(player.PositionY, player.PositionX);
             Console.Write(" ");
-            player.ChangePosition(newPositionX, newPositionY);
+            player.ChangePosition((newPositionX, newPositionY));
             Map.PrintPlayerOnPosition(newPositionX, newPositionY);
         }
 
