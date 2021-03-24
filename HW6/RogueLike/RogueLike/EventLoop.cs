@@ -2,6 +2,9 @@
 
 namespace RogueLike
 {
+    /// <summary>
+    /// Class with a game loop
+    /// </summary>
     public class EventLoop
     {
         public event EventHandler<EventArgs> LeftHandler = (sender, args) => { };
@@ -9,6 +12,9 @@ namespace RogueLike
         public event EventHandler<EventArgs> UpHandler = (sender, args) => { };
         public event EventHandler<EventArgs> DownHandler = (sender, args) => { };
 
+        /// <summary>
+        /// Game launch function
+        /// </summary>
         public void Run()
         {
             while (true)

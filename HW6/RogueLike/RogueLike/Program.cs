@@ -19,6 +19,11 @@ namespace RogueLike
                 Console.WriteLine("The player is not on the map!");
                 return;
             }
+            catch (MoreThanOnePlayerOnTheMap)
+            {
+                Console.WriteLine("There must be one character on the map!");
+                return;
+            }
 
             eventLoop.LeftHandler += game.OnLeft;
             eventLoop.RightHandler += game.OnRight;

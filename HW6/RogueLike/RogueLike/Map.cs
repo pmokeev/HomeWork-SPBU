@@ -3,18 +3,27 @@ using System.IO;
 
 namespace RogueLike
 {
+    /// <summary>
+    /// Class for interacting with the map
+    /// </summary>
     public class Map
     {
         private bool[,] mainMap;
         private int playerPositionX;
         private int playerPositionY;
 
+        /// <summary>
+        /// Map constructor from file
+        /// </summary>
         public Map(string pathToMap)
         {
             LoadMapFromFile(pathToMap);
         }
 
-        public void LoadMapFromFile(string pathToMapFile)
+        /// <summary>
+        /// Loading borders, map walls and character positions
+        /// </summary>
+        private void LoadMapFromFile(string pathToMapFile)
         {
             int lines = File.ReadAllLines(pathToMapFile).Length;
             int columns = File.ReadAllLines(pathToMapFile)[0].Length;
@@ -23,6 +32,7 @@ namespace RogueLike
             using FileStream fileMap = File.OpenRead(pathToMapFile);
             int playerX = -1;
             int playerY = -1;
+            bool flag = false;
 
             for (int i = 0; i < lines; i++)
             {
@@ -32,8 +42,14 @@ namespace RogueLike
 
                     if (stringMap[i][j] == '@')
                     {
+                        if (flag)
+                        {
+                            throw new MoreThanOnePlayerOnTheMap();
+                        }
+
                         playerX = i;
                         playerY = j;
+                        flag = true;
                     }
                 }
             }
@@ -48,12 +64,21 @@ namespace RogueLike
             playerPositionY = playerY;
         }
 
+        /// <summary>
+        /// Receiving a map
+        /// </summary>
         public bool[,] GetMap()
             => mainMap;
 
+        /// <summary>
+        /// Getting the starting coordinates of the character
+        /// </summary>
         public (int playerPositionX, int playerPositionY) GetPositions()
             => (playerPositionX, playerPositionY);
 
+        /// <summary>
+        /// Printing a map by a bool array
+        /// </summary>
         public static void PrintMap(bool[,] mainMap)
         {
             Console.SetCursorPosition(0, 0);
@@ -67,6 +92,9 @@ namespace RogueLike
             }
         }
 
+        /// <summary>
+        /// Draw the character at the desired coordinates
+        /// </summary>
         public static void PrintPlayerOnPosition(int playerPositionX, int playerPositionY)
         {
             Console.SetCursorPosition(playerPositionY, playerPositionX);
