@@ -4,4 +4,4 @@ mono: none
 dotnet: 5.0.103
 
 script:
-    - for f in $(ls | grep -E "^*.sln$"); do dotnet test $f; done
+    - for f in $(find . -name "*.sln"); do dotnet test $f; done
