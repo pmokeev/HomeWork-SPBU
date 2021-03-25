@@ -4,9 +4,11 @@ using System;
 
 namespace RogueLikeTests
 {
+    /// <summary>
+    /// Tests for class game
+    /// </summary>
     public class GameTests
     {
-        // (2, 2)
         private Game game;
 
         [SetUp]

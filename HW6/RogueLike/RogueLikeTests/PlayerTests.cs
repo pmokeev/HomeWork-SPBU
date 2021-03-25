@@ -3,6 +3,9 @@ using RogueLike;
 
 namespace RogueLikeTests
 {
+    /// <summary>
+    /// Tests for class player
+    /// </summary>
     public class PlayerTests
     {
         [Test]
