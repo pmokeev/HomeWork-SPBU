@@ -1,4 +1,6 @@
-﻿namespace StackCalcAppVeyor
+﻿using System;
+
+namespace StackCalcAppVeyor
 {
     /// <summary>
     /// Interface describing basic stack commands
