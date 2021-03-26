@@ -7,9 +7,9 @@ namespace Routers
     {
         static void Main(string[] args)
         {
-            var gr = Algorithm.KruskullsAlgorithm(ReadGraph.CreateGraph("../../../Graph.txt"));
+            var gr = Algorithm.KruskullsAlgorithm(FileFunctions.CreateGraph("../../../Graph.txt"));
 
-            ReadGraph.WriteInFile(gr, "../../../Graph.txt");
+            FileFunctions.WriteInFile(gr, "../../../Graph.txt");
         }
     }
 }
