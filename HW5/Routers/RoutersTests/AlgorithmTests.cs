@@ -66,7 +66,7 @@ namespace RoutersTests
         {
             var startPath = "../../../TaskTest.txt";
             var resultPath = "../../../TaskTestResult.txt";
-            var corretFilePath = "../../../TaskTestRight.txt";
+            var corretFilePath = "../../../TaskTestR.txt";
 
             FileFunctions.WriteInFile(Algorithm.KruskullsAlgorithm(FileFunctions.CreateGraph(startPath)), resultPath);
 
@@ -89,7 +89,7 @@ namespace RoutersTests
         {
             var startPath = "../../../PersonalTest.txt";
             var resultPath = "../../../PersonalTestResult.txt";
-            var corretFilePath = "../../../PersonalTestRight.txt";
+            var corretFilePath = "../../../PersonalTestR.txt";
 
             FileFunctions.WriteInFile(Algorithm.KruskullsAlgorithm(FileFunctions.CreateGraph(startPath)), resultPath);
 
