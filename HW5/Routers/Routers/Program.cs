@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Routers
 {
@@ -7,9 +8,14 @@ namespace Routers
     {
         static void Main(string[] args)
         {
-            var gr = Algorithm.KruskullsAlgorithm(FileFunctions.CreateGraph("../../../Graph.txt"));
-
-            FileFunctions.WriteInFile(gr, "../../../Graph.txt");
+            try
+            {
+                FileFunctions.WriteInFile(Algorithm.KruskullsAlgorithm(FileFunctions.CreateGraph(args[0])), args[1]);
+            }
+            catch (DisconnectedNetworkException error)
+            {
+                Console.Error.WriteLine(error.Message);
+            }
         }
     }
 }

@@ -3,6 +3,9 @@ using Routers;
 
 namespace RoutersTests
 {
+    /// <summary>
+    /// Class with tests of data structure disjoint set
+    /// </summary>
     public class SetTests
     {
         private Set currentSet;

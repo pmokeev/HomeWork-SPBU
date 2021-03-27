@@ -27,13 +27,13 @@ namespace Routers
                 }
             }
 
-            return listToSort.OrderByDescending(element => element.weight);
+            return listToSort.OrderByDescending(x => x.weight).ToList();
         }
 
         /// <summary>
         /// Helper function for finding a cycle in a graph
         /// </summary>
-        private static bool IsCyclicUtility(int currentVertex, bool[] visited, int parent, int[,] matrix, List<int>[] adjacencyList)
+        private static bool IsCyclicUtility(int currentVertex, bool[] visited, int parent, List<int>[] adjacencyList)
         {
             visited[currentVertex] = true;
 
@@ -41,7 +41,7 @@ namespace Routers
             {
                 if (!visited[nextVertex])
                 {
-                    if (IsCyclicUtility(nextVertex, visited, currentVertex, matrix, adjacencyList))
+                    if (IsCyclicUtility(nextVertex, visited, currentVertex, adjacencyList))
                     {
                         return true;
                     }
@@ -59,7 +59,7 @@ namespace Routers
         /// <summary>
         /// Function that checks the presence of a cycle in a graph
         /// </summary>
-        private static bool HasCycle(int size, int[,] matrix, List<int>[] adjacencyList)
+        private static bool HasCycle(int size, List<int>[] adjacencyList)
         {
             bool[] visited = new bool[size];
 
@@ -67,7 +67,7 @@ namespace Routers
             {
                 if (!visited[currentVertex])
                 {
-                    if (IsCyclicUtility(currentVertex, visited, -1, matrix, adjacencyList))
+                    if (IsCyclicUtility(currentVertex, visited, -1, adjacencyList))
                     {
                         return true;
                     }
@@ -102,7 +102,7 @@ namespace Routers
                 adjacencyList[item.firstVertex].Add(item.secondVertex);
                 adjacencyList[item.secondVertex].Add(item.firstVertex);
 
-                if (HasCycle(matrix.GetLength(0), resultMatrix, adjacencyList))
+                if (HasCycle(matrix.GetLength(0), adjacencyList))
                 {
                     resultMatrix[item.firstVertex, item.secondVertex] = 0;
                     resultMatrix[item.secondVertex, item.firstVertex] = 0;
@@ -116,7 +116,7 @@ namespace Routers
 
             if (!setVertices.IsOnlySet())
             {
-                Console.Error.WriteLine("Disconnected network");
+                throw new DisconnectedNetworkException("Disconnected network!");
             }
 
             return resultMatrix;

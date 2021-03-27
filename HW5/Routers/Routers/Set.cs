@@ -3,7 +3,7 @@
 namespace Routers
 {
     /// <summary>
-    /// A class that implements a set
+    /// A class that implements a disjoint set
     /// </summary>
     public class Set
     {
@@ -27,7 +27,14 @@ namespace Routers
         /// The function returns the minimum element in the desired set
         /// </summary>
         public int Find(int currentVertex)
-            => arraySets[currentVertex];
+        {
+            if (currentVertex == arraySets[currentVertex])
+            {
+                return currentVertex;
+            }
+
+            return Find(arraySets[currentVertex]);
+        }
 
         /// <summary>
         /// Checking that there is only one set
@@ -50,13 +57,12 @@ namespace Routers
         /// </summary>
         public void Union(int firstVertex, int secondVertex)
         {
-            if (arraySets[firstVertex] == arraySets[secondVertex])
+            int firstElement = Find(firstVertex);
+            int secondElement = Find(secondVertex);
+
+            if (firstElement != secondElement)
             {
-                return;
-            }
-            else
-            {
-                arraySets[Array.IndexOf(arraySets, arraySets[secondVertex])] = arraySets[firstVertex];
+                arraySets[secondElement] = firstElement;
             }
         }
     }
