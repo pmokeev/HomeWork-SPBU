@@ -33,6 +33,24 @@ namespace RoutersTests
             return true;
         }
 
+        private void PrintBytes(string pathToCreateFile, string pathToRealFile)
+        {
+            using FileStream createFile = File.OpenRead(pathToCreateFile);
+            using FileStream realFile = File.OpenRead(pathToRealFile);
+
+            for (int i = 0; i < createFile.Length; i++)
+            {
+                System.Console.Write($"{createFile.ReadByte()} ");
+            }
+
+            System.Console.WriteLine();
+
+            for (int i = 0; i < realFile.Length; i++)
+            {
+                System.Console.Write($"{realFile.ReadByte()} ");
+            }
+        }
+
         [Test]
         public void AlgorithmTaskTest()
         {
@@ -74,6 +92,8 @@ namespace RoutersTests
             var corretFilePath = "../../../PersonalTestDone.txt";
 
             FileFunctions.WriteInFile(Algorithm.KruskullsAlgorithm(FileFunctions.CreateGraph(startPath)), resultPath);
+
+            PrintBytes(resultPath, corretFilePath);
 
             Assert.IsTrue(IsSimilarFiles(resultPath, corretFilePath));
             File.Delete(resultPath);
