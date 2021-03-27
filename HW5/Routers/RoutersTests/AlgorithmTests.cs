@@ -40,14 +40,14 @@ namespace RoutersTests
 
             for (int i = 0; i < createFile.Length; i++)
             {
-                System.Console.Write(createFile.ReadByte());
+                System.Console.Write($"{createFile.ReadByte()} ");
             }
 
             System.Console.WriteLine();
 
             for (int i = 0; i < realFile.Length; i++)
             {
-                System.Console.Write(realFile.ReadByte());
+                System.Console.Write($"{realFile.ReadByte()} ");
             }
         }
 
