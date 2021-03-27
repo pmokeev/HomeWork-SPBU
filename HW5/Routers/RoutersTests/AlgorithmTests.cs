@@ -46,9 +46,9 @@ namespace RoutersTests
         [Test]
         public void AlgorithmTaskWriteInFileTest()
         {
-            var startPath = "../../../TaskTest.txt";
-            var resultPath = "../../../TaskTestResult.txt";
-            var corretFilePath = "../../../TaskTestRight.txt";
+            var startPath = "TaskTest.txt";
+            var resultPath = "TaskTestResult.txt";
+            var corretFilePath = "TaskTestRight.txt";
 
             FileFunctions.WriteInFile(Algorithm.KruskullsAlgorithm(FileFunctions.CreateGraph(startPath)), resultPath);
 
@@ -59,9 +59,9 @@ namespace RoutersTests
         [Test]
         public void ExceptionAlgorithmTaskWriteInFileTest()
         {
-            var startPath = "../../../ErrorTest.txt";
-            var resultPath = "../../../ErrorTestResult.txt";
-            var corretFilePath = "../../../ErrorTestRight.txt";
+            var startPath = "ErrorTest.txt";
+            var resultPath = "ErrorTestResult.txt";
+            var corretFilePath = "ErrorTestRight.txt";
 
             Assert.Catch<DisconnectedNetworkException>(() => FileFunctions.WriteInFile(Algorithm.KruskullsAlgorithm(FileFunctions.CreateGraph(startPath)), resultPath));
             File.Delete(resultPath);
@@ -70,9 +70,9 @@ namespace RoutersTests
         [Test]
         public void AlgorithmPersonalWriteInFileTest()
         {
-            var startPath = "../../../PersonalTest.txt";
-            var resultPath = "../../../PersonalTestResult.txt";
-            var corretFilePath = "../../../PersonalTestRight.txt";
+            var startPath = "PersonalTest.txt";
+            var resultPath = "PersonalTestResult.txt";
+            var corretFilePath = "PersonalTestRight.txt";
 
             FileFunctions.WriteInFile(Algorithm.KruskullsAlgorithm(FileFunctions.CreateGraph(startPath)), resultPath);
 
