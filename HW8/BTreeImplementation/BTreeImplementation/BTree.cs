@@ -28,27 +28,73 @@ namespace BTreeImplementation
                 NumberOfKeys = 0;
             }
 
-            /// <summary>
-            /// Print the values of the current node
-            /// </summary>
-            public void PrintNode()
+            public List<KeyValuePair<TKey, TValue>> TraverseNode()
             {
-                int index;
+                List<KeyValuePair<TKey, TValue>> pairList = new List<KeyValuePair<TKey, TValue>>();
+                int index = 0;
 
                 for (index = 0; index < NumberOfKeys; index++)
                 {
                     if (!IsLeaf)
                     {
-                        Children[index].PrintNode();
+                        pairList = pairList.Union(Children[index].TraverseNode()).ToList();
                     }
 
-                    Console.WriteLine($" Key = {Keys[index].key}, Value = {Keys[index].value};");
+                    pairList.Add(new KeyValuePair<TKey, TValue>(Keys[index].key, Keys[index].value));
                 }
 
                 if (!IsLeaf)
                 {
-                    Children[index].PrintNode();
+                    pairList = pairList.Union(Children[index].TraverseNode()).ToList();
                 }
+
+                return pairList;
+            }
+
+            public List<TKey> TraverseNodeKey()
+            {
+                List<TKey> keyList = new List<TKey>();
+                int index = 0;
+
+                for (index = 0; index < NumberOfKeys; index++)
+                {
+                    if (!IsLeaf)
+                    {
+                        keyList = keyList.Union(Children[index].TraverseNodeKey()).ToList();
+                    }
+
+                    keyList.Add(Keys[index].key);
+                }
+
+                if (!IsLeaf)
+                {
+                    keyList = keyList.Union(Children[index].TraverseNodeKey()).ToList();
+                }
+
+                return keyList;
+            }
+
+            public List<TValue> TraverseNodeValue()
+            {
+                List<TValue> valueList = new List<TValue>();
+                int index = 0;
+
+                for (index = 0; index < NumberOfKeys; index++)
+                {
+                    if (!IsLeaf)
+                    {
+                        valueList = valueList.Union(Children[index].TraverseNodeValue()).ToList();
+                    }
+
+                    valueList.Add(Keys[index].value);
+                }
+
+                if (!IsLeaf)
+                {
+                    valueList = valueList.Union(Children[index].TraverseNodeValue()).ToList();
+                }
+
+                return valueList;
             }
 
             /// <summary>
@@ -464,9 +510,21 @@ namespace BTreeImplementation
             MinimumDegree = currentDegree;
         }
 
-        public ICollection<TKey> Keys { get; } = new List<TKey>();
+        public ICollection<TKey> Keys
+        {
+            get
+            {
+                return root.TraverseNodeKey();
+            }
+        }
 
-        public ICollection<TValue> Values { get; } = new List<TValue>();
+        public ICollection<TValue> Values
+        {
+            get
+            {
+                return root.TraverseNodeValue();
+            }
+        }
 
         public int Count 
             => Keys.Count;
@@ -475,8 +533,6 @@ namespace BTreeImplementation
         {
             get { return false; }
         }   
-
-        private List<KeyValuePair<TKey, TValue>> pairList = new List<KeyValuePair<TKey, TValue>>();
 
         public TValue this[TKey keyToSearch]
         {
@@ -488,6 +544,15 @@ namespace BTreeImplementation
             set => Add(keyToSearch, value);
         }
 
+        private List<KeyValuePair<TKey, TValue>> Traverse()
+        {
+            if (!IsEmpty())
+            {
+                return root.TraverseNode();
+            }
+
+            return null;
+        }
 
         public void Clear()
         {
@@ -500,7 +565,6 @@ namespace BTreeImplementation
 
             Keys.Clear();
             Values.Clear();
-            pairList.Clear();
         }
 
         /// <summary>
@@ -591,18 +655,6 @@ namespace BTreeImplementation
                     root.InsertNotFull(newKey.key, newKey.value);
                 }
             }
-
-            if (!Keys.Contains(keyToAdd))
-            {
-                Keys.Add(keyToAdd);
-                pairList.Add(new KeyValuePair<TKey, TValue>(keyToAdd, valueToAdd));
-                pairList = pairList.OrderBy(x => x.Key).ToList();
-            }
-
-            if (!Values.Contains(valueToAdd))
-            {
-                Values.Add(valueToAdd);
-            }
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
@@ -633,9 +685,6 @@ namespace BTreeImplementation
                 }
             }
 
-            pairList.Remove(new KeyValuePair<TKey, TValue>(keyToDelete, outputValue));
-            Values.Remove(outputValue);
-            Keys.Remove(keyToDelete);
             return true;
         }
 
@@ -644,9 +693,14 @@ namespace BTreeImplementation
         /// </summary>
         public void PrintElementsInTree()
         {
-            if (root != null)
+            if (IsEmpty())
             {
-                root.PrintNode();
+                List<KeyValuePair<TKey, TValue>> pairList = Traverse();
+
+                foreach (var item in pairList)
+                {
+                    Console.WriteLine($"Key = {item.Key}, value = {item.Value}");
+                }
             }
         }
 
@@ -728,7 +782,7 @@ namespace BTreeImplementation
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return new DictionaryEnumerator(pairList);
+            return new DictionaryEnumerator(Traverse());
         }
 
         IEnumerator IEnumerable.GetEnumerator()
