@@ -28,6 +28,9 @@ namespace BTreeImplementation
                 NumberOfKeys = 0;
             }
 
+            /// <summary>
+            /// Traversal to get a list of b-tree pairs
+            /// </summary>
             public List<KeyValuePair<TKey, TValue>> TraverseNode()
             {
                 List<KeyValuePair<TKey, TValue>> pairList = new List<KeyValuePair<TKey, TValue>>();
@@ -51,6 +54,9 @@ namespace BTreeImplementation
                 return pairList;
             }
 
+            /// <summary>
+            /// Traversal to get a list of b-tree keys
+            /// </summary>
             public List<TKey> TraverseNodeKey()
             {
                 List<TKey> keyList = new List<TKey>();
@@ -74,6 +80,9 @@ namespace BTreeImplementation
                 return keyList;
             }
 
+            /// <summary>
+            /// Traversal to get a list of tree values
+            /// </summary>
             public List<TValue> TraverseNodeValue()
             {
                 List<TValue> valueList = new List<TValue>();
@@ -503,45 +512,59 @@ namespace BTreeImplementation
         }
 
         private BTreeNode root;
-        private int MinimumDegree;
+        private int minimumDegree;
+        private int versionBTree;
 
         public BTree(int currentDegree)
         {
-            MinimumDegree = currentDegree;
+            minimumDegree = currentDegree;
+            versionBTree = 0;
         }
 
+        /// <summary>
+        /// Property storing the current list of b-tree keys
+        /// </summary>
         public ICollection<TKey> Keys
-        {
-            get
-            {
-                return root.TraverseNodeKey();
-            }
-        }
+            => root.TraverseNodeKey();
 
+        /// <summary>
+        /// Property storing the current list of b-tree values
+        /// </summary>
         public ICollection<TValue> Values
-        {
-            get
-            {
-                return root.TraverseNodeValue();
-            }
-        }
+            => root.TraverseNodeValue();
 
+        /// <summary>
+        /// Property storing the number of pairs in the b-tree
+        /// </summary>
         public int Count 
             => Keys.Count;
 
+        /// <summary>
+        /// Gets a value indicating whether the object is read-only.
+        /// </summary>
         public bool IsReadOnly
-        {
-            get { return false; }
-        }   
+            => false;
 
-        public TValue this[TKey keyToSearch]
+        /// <summary>
+        /// Gets or sets the element with the specified key.
+        /// </summary>
+        public TValue this[TKey key]
         {
             get
             {
-                TryGetValue(keyToSearch, out TValue outputValue);
+                TValue outputValue;
+                if (key == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                else if (!TryGetValue(key, out outputValue))
+                {
+                    throw new KeyNotFoundException();
+                }
+
                 return outputValue;
             }
-            set => Add(keyToSearch, value);
+            set => Add(key, value);
         }
 
         private List<KeyValuePair<TKey, TValue>> Traverse()
@@ -554,6 +577,9 @@ namespace BTreeImplementation
             return null;
         }
 
+        /// <summary>
+        /// Clear the current b-tree
+        /// </summary>
         public void Clear()
         {
             List<TKey> temp = new List<TKey>(Keys);
@@ -563,8 +589,7 @@ namespace BTreeImplementation
                 Remove(item);
             }
 
-            Keys.Clear();
-            Values.Clear();
+            versionBTree++;
         }
 
         /// <summary>
@@ -573,8 +598,18 @@ namespace BTreeImplementation
         public bool IsEmpty()
             => root == null;
 
+        /// <summary>
+        /// A function that returns by reference a value for a given key and a boolean value that means there is such a key in the b-tree
+        /// </summary>
+        /// <returns>boolean meaning the presence of such a key in the b-tree</returns>
         public bool TryGetValue(TKey currentKey, out TValue outputValue)
         {
+            if (root == null)
+            {
+                outputValue = default(TValue);
+                return false;
+            }
+
             BTreeNode currentNode = root.SearchNode(currentKey);
 
             if (currentNode == null)
@@ -598,9 +633,22 @@ namespace BTreeImplementation
             return false;
         }
 
+        /// <summary>
+        /// Determines whether the collection contains the specified value.
+        /// </summary>
         public bool Contains(KeyValuePair<TKey, TValue> item)
-            => ContainsKey(item.Key);
+        {
+            if (TryGetValue(item.Key, out TValue result) && Comparer<TValue>.Default.Compare(item.Value, result) == 0)
+            {
+                return true;
+            }
 
+            return false;
+        }
+
+        /// <summary>
+        /// Determines if an element with the specified key is contained
+        /// </summary>
         public bool ContainsKey(TKey currentKey)
             => TryGetValue(currentKey, out TValue outputValue);
 
@@ -615,8 +663,12 @@ namespace BTreeImplementation
             }
 
             root.ChangeValue(currentKey, newValue);
+            versionBTree++;
         }
 
+        /// <summary>
+        /// Function for adding a pair using KeyValuePair
+        /// </summary>
         public void Add(KeyValuePair<TKey, TValue> item)
             => Add(item.Key, item.Value);
 
@@ -625,19 +677,28 @@ namespace BTreeImplementation
         /// </summary>
         public void Add(TKey keyToAdd, TValue valueToAdd)
         {
+            if (keyToAdd == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (TryGetValue(keyToAdd, out TValue result))
+            {
+                throw new ArgumentException();
+            }
+
             (TKey key, TValue value) newKey = (keyToAdd, valueToAdd);
 
             if (IsEmpty())
             {
-                root = new BTreeNode(MinimumDegree, true);
+                root = new BTreeNode(minimumDegree, true);
                 root.Keys[0] = newKey;
                 root.NumberOfKeys = 1;
             }
             else
             {
-                if (root.NumberOfKeys == 2 * MinimumDegree - 1)
+                if (root.NumberOfKeys == 2 * minimumDegree - 1)
                 {
-                    BTreeNode newNode = new BTreeNode(MinimumDegree, false);
+                    BTreeNode newNode = new BTreeNode(minimumDegree, false);
                     newNode.Children[0] = root;
                     newNode.SplitChild(0, root);
                     int index = 0;
@@ -655,8 +716,13 @@ namespace BTreeImplementation
                     root.InsertNotFull(newKey.key, newKey.value);
                 }
             }
+
+            versionBTree++;
         }
 
+        /// <summary>
+        /// Function for remove a pair using KeyValuePair
+        /// </summary>
         public bool Remove(KeyValuePair<TKey, TValue> item)
             => Remove(item.Key);
 
@@ -666,6 +732,11 @@ namespace BTreeImplementation
         /// <param name="keyToDelete"></param>
         public bool Remove(TKey keyToDelete)
         {
+            if (keyToDelete == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             if (IsEmpty() || !TryGetValue(keyToDelete, out TValue outputValue))
             {
                 return false;
@@ -685,6 +756,7 @@ namespace BTreeImplementation
                 }
             }
 
+            versionBTree++;
             return true;
         }
 
@@ -704,6 +776,9 @@ namespace BTreeImplementation
             }
         }
 
+        /// <summary>
+        /// Copies the elements of the collection to an Array, starting at the specified index of the Array.
+        /// </summary>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             if (array == null)
@@ -729,15 +804,20 @@ namespace BTreeImplementation
         private class DictionaryEnumerator : IEnumerator<KeyValuePair<TKey, TValue>>
         {
             private int currentIndex = -1;
-            private int startLength;
+            private int currentVersion;
             private List<KeyValuePair<TKey, TValue>> pairList;
+            BTree<TKey, TValue> tree;
 
-            public DictionaryEnumerator(List<KeyValuePair<TKey, TValue>> pairList)
+            public DictionaryEnumerator(BTree<TKey, TValue> currentTree)
             {
-                this.pairList = pairList;
-                startLength = pairList.Count();
+                pairList = currentTree.Traverse();
+                currentVersion = currentTree.versionBTree;
+                tree = currentTree;
             }
 
+            /// <summary>
+            /// The current element of the enumerator
+            /// </summary>
             public object Current
             {
                 get
@@ -752,15 +832,16 @@ namespace BTreeImplementation
             }
 
             KeyValuePair<TKey, TValue> IEnumerator<KeyValuePair<TKey, TValue>>.Current
-            {
-                get { return (KeyValuePair<TKey, TValue>)Current; }
-            }
+                => (KeyValuePair<TKey, TValue>)Current;
 
+            /// <summary>
+            /// Go to new item
+            /// </summary>
             public bool MoveNext()
             {
-                if (startLength != pairList.Count)
+                if (currentVersion != tree.versionBTree)
                 {
-                    throw new InvalidOperationException("Collection was modified; enumeration operation may not execute.");
+                    throw new InvalidOperationException();
                 }
 
                 if (currentIndex < pairList.Count - 1)
@@ -772,6 +853,9 @@ namespace BTreeImplementation
                 return false;
             }
 
+            /// <summary>
+            /// "Our song is good - start over" (Наша песня хороша - начинай сначала)
+            /// </summary>
             public void Reset()
             {
                 currentIndex = -1;
@@ -780,9 +864,12 @@ namespace BTreeImplementation
             public void Dispose() { }
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates over the collection.
+        /// </summary>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return new DictionaryEnumerator(Traverse());
+            return new DictionaryEnumerator(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -1,5 +1,7 @@
 using NUnit.Framework;
 using BTreeImplementation;
+using System.Collections.Generic;
+using System;
 
 namespace BTreeTests
 {
@@ -8,36 +10,43 @@ namespace BTreeTests
     /// </summary>
     public class BTreeFunctionsTests
     {
-        private BTree<string, string> tree;
+        private BTree<string, string> treeString;
+        private BTree<int, string> treeIntString; 
 
         [SetUp]
         public void Setup()
         {
-            tree = new BTree<string, string>(2);
+            treeString = new BTree<string, string>(2);
+            treeIntString = new BTree<int, string>(2);
+
+            for (int i = 0; i < 10; i++)
+            {
+                treeIntString.Add(i, i.ToString());
+            }
         }
 
         [Test]
         public void EmptyTreeTest()
         {
-            Assert.IsTrue(tree.IsEmpty());
+            Assert.IsTrue(treeString.IsEmpty());
         }
 
         [Test]
         public void OneItemInsertTest()
         {
-            tree.Add("a", "1");
+            treeString.Add("a", "1");
 
-            Assert.IsTrue(tree.ContainsKey("a"));
+            Assert.IsTrue(treeString.ContainsKey("a"));
         }
 
         [Test]
         public void OneItemInsertAndDeleteTest()
         {
-            tree.Add("a", "1");
+            treeString.Add("a", "1");
 
-            tree.Remove("a");
+            treeString.Remove("a");
 
-            Assert.IsTrue(tree.IsEmpty());
+            Assert.IsTrue(treeString.IsEmpty());
         }
 
         [Test]
@@ -45,12 +54,12 @@ namespace BTreeTests
         {
             for (int i = 1; i < 15; i++)
             {
-                tree.Add(i.ToString(), i.ToString());
+                treeString.Add(i.ToString(), i.ToString());
             }
 
             for (int i = 1; i < 15; i++)
             {
-                Assert.IsTrue(tree.ContainsKey(i.ToString()));
+                Assert.IsTrue(treeString.ContainsKey(i.ToString()));
             }
         }
 
@@ -59,12 +68,12 @@ namespace BTreeTests
         {
             for (int i = 0; i < 9; i++)
             {
-                tree.Add(i.ToString(), i.ToString());
+                treeString.Add(i.ToString(), i.ToString());
             }
 
-            tree.Remove("0");
+            treeString.Remove("0");
 
-            Assert.IsFalse(tree.ContainsKey("0"));
+            Assert.IsFalse(treeString.ContainsKey("0"));
         }
 
         [Test]
@@ -72,13 +81,13 @@ namespace BTreeTests
         {
             for (int i = 0; i < 2; i++)
             {
-                tree.Add(i.ToString(), i.ToString());
+                treeString.Add(i.ToString(), i.ToString());
             }
 
-            tree.Remove("0");
+            treeString.Remove("0");
 
-            Assert.IsFalse(tree.ContainsKey("0"));
-            Assert.IsTrue(tree.ContainsKey("1"));
+            Assert.IsFalse(treeString.ContainsKey("0"));
+            Assert.IsTrue(treeString.ContainsKey("1"));
         }
 
         [Test]
@@ -86,12 +95,12 @@ namespace BTreeTests
         {
             for (int i = 0; i < 10; i++)
             {
-                tree.Add(i.ToString(), i.ToString());
+                treeString.Add(i.ToString(), i.ToString());
             }
 
-            tree.Remove("9");
+            treeString.Remove("9");
 
-            Assert.IsFalse(tree.ContainsKey("9"));
+            Assert.IsFalse(treeString.ContainsKey("9"));
         }
 
         [Test]
@@ -99,15 +108,15 @@ namespace BTreeTests
         {
             for (int i = 1; i < 11; i++)
             {
-                tree.Add(i.ToString(), i.ToString());
+                treeString.Add(i.ToString(), i.ToString());
             }
 
             for (int i = 1; i < 11; i++)
             {
-                tree.Remove(i.ToString());
+                treeString.Remove(i.ToString());
             }
 
-            Assert.IsTrue(tree.IsEmpty());
+            Assert.IsTrue(treeString.IsEmpty());
         }
 
         [Test]
@@ -115,10 +124,10 @@ namespace BTreeTests
         {
             for (int i = 0; i < 15; i++)
             {
-                tree.Add(i.ToString(), i.ToString());
+                treeString.Add(i.ToString(), i.ToString());
             }
 
-            Assert.IsFalse(tree.Remove("15"));
+            Assert.IsFalse(treeString.Remove("15"));
         }
 
         [Test]
@@ -126,12 +135,12 @@ namespace BTreeTests
         {
             for (int i = 0; i < 15; i++)
             {
-                tree.Add(i.ToString(), i.ToString());
+                treeString.Add(i.ToString(), i.ToString());
             }
 
-            tree.ChangeValue("3", "12");
+            treeString.ChangeValue("3", "12");
 
-            tree.TryGetValue("3", out string result);
+            treeString.TryGetValue("3", out string result);
 
             Assert.AreEqual("12", result);
         }
@@ -141,20 +150,20 @@ namespace BTreeTests
         {
             for (int i = 0; i < 15; i++)
             {
-                tree.Add(i.ToString(), i.ToString());
+                treeString.Add(i.ToString(), i.ToString());
             }
 
-            Assert.Catch<NonExistentKeyException>(() => tree.ChangeValue("15", "a"));
+            Assert.Catch<NonExistentKeyException>(() => treeString.ChangeValue("15", "a"));
         }
 
         [Test]
         public void IsExistKeyTest()
         {
-            tree.Add("a", "1");
-            tree.Add("b", "2");
-            tree.Add("c", "3");
+            treeString.Add("a", "1");
+            treeString.Add("b", "2");
+            treeString.Add("c", "3");
 
-            Assert.IsFalse(tree.ContainsKey("d"));
+            Assert.IsFalse(treeString.ContainsKey("d"));
         }
 
         [Test]
@@ -162,16 +171,184 @@ namespace BTreeTests
         {
             for (int i = 0; i < 15; i++)
             {
-                tree.Add(i.ToString(), i.ToString());
+                treeString.Add(i.ToString(), i.ToString());
             }
 
-            tree.Remove("3");
+            treeString.Remove("3");
 
-            Assert.IsFalse(tree.ContainsKey("3"));
+            Assert.IsFalse(treeString.ContainsKey("3"));
 
-            tree.Add("3", "3");
+            treeString.Add("3", "3");
 
-            Assert.IsTrue(tree.ContainsKey("3"));
+            Assert.IsTrue(treeString.ContainsKey("3"));
+        }
+
+        [Test]
+        public void KeysInDictTest()
+        {
+            var correctList = new List<int>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                correctList.Add(i);
+            }
+
+            CollectionAssert.AreEqual(correctList, treeIntString.Keys);
+        }
+
+        [Test]
+        public void ValuesInDictTest()
+        {
+            var correctList = new List<string>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                correctList.Add(i.ToString());
+            }
+
+            CollectionAssert.AreEqual(correctList, treeIntString.Values);
+        }
+
+        [Test]
+        public void KeysCountTest()
+        {
+            Assert.AreEqual(10, treeIntString.Count);
+        }
+
+        [Test]
+        public void GetValueByUsingThisTest()
+        {
+            Assert.AreEqual("3", treeIntString[3]);
+        }
+
+        [Test]
+        public void ClearTreeTest()
+        {
+            treeIntString.Clear();
+
+            Assert.IsTrue(treeIntString.IsEmpty());
+        }
+
+        [Test]
+        public void GetValueByMethodTest()
+        {
+            treeIntString.TryGetValue(3, out string outputValue);
+
+            Assert.AreEqual("3", outputValue);
+        }
+
+        [Test]
+        public void IsContainsKeyTest()
+        {
+            Assert.IsTrue(treeIntString.ContainsKey(3));
+        }
+
+        [Test]
+        public void IsNotContainsKeyTest()
+        {
+            Assert.IsFalse(treeIntString.ContainsKey(10));
+        }
+
+        [Test]
+        public void IContainsPairTest()
+        {
+            Assert.IsTrue(treeIntString.Contains(new KeyValuePair<int, string>(3, "3")));
+        }
+
+        [Test]
+        public void AddByPairTest()
+        {
+            treeIntString.Add(new KeyValuePair<int, string>(10, "10"));
+
+            Assert.IsTrue(treeIntString.Contains(new KeyValuePair<int, string>(10, "10")));
+        }
+
+        [Test]
+        public void RemoveByPairTest()
+        {
+            treeIntString.Remove(new KeyValuePair<int, string>(0, "0"));
+
+            Assert.IsFalse(treeIntString.Contains(new KeyValuePair<int, string>(0, "0")));
+        }
+
+        [Test]
+        public void CopyToArrayTest()
+        {
+            var array = new KeyValuePair<int, string>[10];
+            var answerArray = new KeyValuePair<int, string>[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                answerArray[i] = new KeyValuePair<int, string>(i, i.ToString());
+            }
+
+            treeIntString.CopyTo(array, 0);
+
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(answerArray[i], array[i]);
+            }
+        }
+
+        [Test]
+        public void ForeachTreeTest()
+        {
+            var answerArray = new KeyValuePair<int, string>[10];
+            int index = 0;
+
+            for (int i = 0; i < 10; i++)
+            {
+                answerArray[i] = new KeyValuePair<int, string>(i, i.ToString());
+            }
+
+            foreach (var item in treeIntString)
+            {
+                Assert.AreEqual(answerArray[index], item);
+                index++;
+            }
+        }
+
+        [Test]
+        public void CurrentTestAfterDelete()
+        {
+            foreach (var item in treeIntString)
+            {
+                if (item.Key == 2)
+                {
+                    treeIntString.Remove(2);
+                    Assert.AreEqual(new KeyValuePair<int, string>(2, "2"), item);
+                    return;
+                }
+            }
+        }
+
+        [Test]
+        public void MoveNextExceptionTest()
+        {
+            var dictionaryEnumerator = treeIntString.GetEnumerator();
+
+            treeIntString.Remove(0);
+
+            Assert.Catch<InvalidOperationException>(() => dictionaryEnumerator.MoveNext());
+        }
+
+        [Test]
+        public void AlreadyExistAddTest()
+        {
+            Assert.Catch<ArgumentException>(() => treeIntString.Add(0, "10"));
+        }
+
+        [Test]
+        public void ResetEnumeratorTest()
+        {
+            var dictionaryEnumerator = treeIntString.GetEnumerator();
+            dictionaryEnumerator.MoveNext();
+            dictionaryEnumerator.MoveNext();
+
+            dictionaryEnumerator.Reset();
+            dictionaryEnumerator.MoveNext();
+
+            Assert.AreEqual(new KeyValuePair<int, string>(0, "0"), dictionaryEnumerator.Current);
         }
     }
 }

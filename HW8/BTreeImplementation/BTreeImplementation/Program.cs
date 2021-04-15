@@ -8,7 +8,7 @@ namespace BTreeImplementation
     {
         static void Main(string[] args)
         {
-
+            Console.WriteLine("Goodbye, cruel world!");
         }
     }
 }
