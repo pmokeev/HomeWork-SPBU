@@ -7,9 +7,7 @@ namespace StackCalc
         private IStack stack;
 
         public Calculator(IStack stack)
-        {
-            this.stack = stack;
-        }
+            => this.stack = stack;
 
         private (float, float) GetTwoElementsFromStack()
         {
