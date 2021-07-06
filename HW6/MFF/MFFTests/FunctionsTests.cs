@@ -38,7 +38,7 @@ namespace MFFTests
         public void TaskFilterTest()
         {
             var testList = new List<int>() { 2, 3, 4, 5, 6 };
-            var resultList = new List<bool>() { true, false, true, false, true };
+            var resultList = new List<int>() { 2, 4, 6 };
 
             CollectionAssert.AreEqual(resultList, Functions.Filter(testList, x => (x % 2) == 0));
         }
@@ -47,7 +47,7 @@ namespace MFFTests
         public void EmptyListFilterTest()
         {
             var testList = new List<int>();
-            var resultList = new List<bool>();
+            var resultList = new List<int>();
 
             CollectionAssert.AreEqual(resultList, Functions.Filter(testList, x => (x % 2) == 0));
         }
@@ -56,9 +56,18 @@ namespace MFFTests
         public void SqrtFilterTest()
         {
             var testList = new List<int>() { 2, 4, 5, 6, 1, 7 };
-            var resultList = new List<bool>() { false, false, false, false, true, false };
+            var resultList = new List<int>() { 1 };
 
             CollectionAssert.AreEqual(resultList, Functions.Filter(testList, x => Math.Sqrt(x) == 1));
+        }
+        
+        [Test]
+        public void StringFilterTest()
+        {
+            var testList = new List<string>() { "Hello", "Goodbye!" };
+            var resultList = new List<string>() { "Hello" };
+
+            CollectionAssert.AreEqual(resultList, Functions.Filter(testList, x => x.Length == 5));
         }
 
         [Test]
