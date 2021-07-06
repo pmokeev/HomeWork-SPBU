@@ -1,7 +1,7 @@
 image: Visual Studio 2019
 
 init:
-  - git config --global core.autocrlf false
+  - git config --global core.autocrlf true
 
 before_build:
     - For /R %%I in (*.sln) do nuget restore %%I
