@@ -1,32 +1,41 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using UniqueListNumber;
 
-namespace UniqueListNumber
+namespace ListTest
 {
-    [TestClass]
+    /// <summary>
+    /// Testing the functionality of a unique list
+    /// </summary>
     public class UniqueListTests
     {
-        private UniqueList uniqueList = new UniqueList();
+        private UniqueList uniqueList;
 
-        [TestMethod]
+        [SetUp]
+        public void Setup()
+        {
+            uniqueList = new();
+        }
+
+        [Test]
         public void NormalInsertInUniqueListTests()
         {
             uniqueList.Insert(1, 0);
             uniqueList.Insert(2, 1);
             uniqueList.Insert(3, 2);
 
-            Assert.IsTrue(uniqueList.IsExistValue(2));
+            Assert.IsTrue(uniqueList.Contains(2));
         }
 
-        [TestMethod]
+        [Test]
         public void ErrorInsertInUniqueListTests()
         {
             uniqueList.Insert(1, 0);
             uniqueList.Insert(2, 1);
 
-            Assert.ThrowsException<ValueIsAlreadyInsertedException>(() => uniqueList.Insert(1, 0));
+            Assert.Throws<ValueIsAlreadyInsertedException>(() => uniqueList.Insert(1, 0));
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteByValueFromUniqueListTests()
         {
             uniqueList.Insert(1, 0);
@@ -35,20 +44,20 @@ namespace UniqueListNumber
 
             uniqueList.DeleteByValue(2);
 
-            Assert.IsFalse(uniqueList.IsExistValue(2));
+            Assert.IsFalse(uniqueList.Contains(2));
         }
 
-        [TestMethod]
+        [Test]
         public void ErrorDeleteByValueFromUniqueListTests()
         {
             uniqueList.Insert(1, 0);
             uniqueList.Insert(2, 1);
             uniqueList.Insert(3, 2);
 
-            Assert.ThrowsException<ValueDoesNotExistException>(() => uniqueList.DeleteByValue(4));
+            Assert.Throws<ValueDoesNotExistException>(() => uniqueList.DeleteByValue(4));
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteByIndexFromUniqueListTests()
         {
             uniqueList.Insert(1, 0);
@@ -57,20 +66,20 @@ namespace UniqueListNumber
 
             uniqueList.DeleteByIndex(2);
 
-            Assert.IsFalse(uniqueList.IsExistValue(3));
+            Assert.IsFalse(uniqueList.Contains(3));
         }
 
-        [TestMethod]
+        [Test]
         public void ErrorDeleteByIndexFromUniqueListTests()
         {
             uniqueList.Insert(1, 0);
             uniqueList.Insert(2, 1);
             uniqueList.Insert(3, 2);
 
-            Assert.ThrowsException<ValueDoesNotExistException>(() => uniqueList.DeleteByIndex(4));
+            Assert.Throws<ValueDoesNotExistException>(() => uniqueList.DeleteByIndex(4));
         }
 
-        [TestMethod]
+        [Test]
         public void SetValueInUniqueListTests()
         {
             uniqueList.Insert(1, 0);
@@ -79,17 +88,17 @@ namespace UniqueListNumber
 
             uniqueList.SetValueByIndex(2, 1);
 
-            Assert.IsTrue(uniqueList.IsExistValue(2));
+            Assert.IsTrue(uniqueList.Contains(2));
         }
 
-        [TestMethod]
+        [Test]
         public void ErrorSetValueInUniqueListTests()
         {
             uniqueList.Insert(1, 0);
             uniqueList.Insert(2, 1);
             uniqueList.Insert(3, 2);
 
-            Assert.ThrowsException<ValueIsAlreadyInsertedException>(() => uniqueList.SetValueByIndex(2, 2));
+            Assert.Throws<ValueIsAlreadyInsertedException>(() => uniqueList.SetValueByIndex(2, 2));
         }
     }
 }

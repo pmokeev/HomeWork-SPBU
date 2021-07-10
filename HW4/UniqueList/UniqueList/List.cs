@@ -7,19 +7,20 @@ namespace UniqueListNumber
     /// </summary>
     public class List
     {
-        private class NodeList
+        private class ListNode
         {
             public int Value { get; set; }
-            public NodeList NextNode { get; set; }
+            public ListNode NextNode { get; set; }
 
-            public NodeList(int value)
+            public ListNode(int value)
             {
                 Value = value;
                 NextNode = null;
             }
         }
 
-        private NodeList head;
+        private ListNode head;
+        private int size = 0;
 
         /// <summary>
         /// Insert value in List
@@ -32,59 +33,48 @@ namespace UniqueListNumber
                 throw new IndexOutOfRangeException();
             }
 
-            var newNode = new NodeList(value);
+            var newNode = new ListNode(value);
             
             if (head == null)
             {
                 head = newNode;
+                size = 1;
+                return;
             }
-            else
+            var currentIndex = 1;
+            ListNode cursor = head;
+
+            while (cursor.NextNode != null)
             {
-                var currentIndex = 1;
-                NodeList cursor = head;
-
-                while (cursor.NextNode != null)
+                if (currentIndex == index)
                 {
-                    if (currentIndex == index)
-                    {
-                        newNode.NextNode = cursor.NextNode;
-                        cursor.NextNode = newNode;
-                        return;
-                    }
-
-                    currentIndex++;
-                    cursor = cursor.NextNode;
+                    newNode.NextNode = cursor.NextNode;
+                    cursor.NextNode = newNode;
+                    return;
                 }
 
-                newNode.NextNode = cursor.NextNode;
-                cursor.NextNode = newNode;
+                currentIndex++;
+                cursor = cursor.NextNode;
             }
+
+            newNode.NextNode = cursor.NextNode;
+            cursor.NextNode = newNode;
+            size++;
         }
 
         /// <summary>
         /// Getting the size of list
         /// </summary>
         public int GetSize()
-        {
-            NodeList cursor = head;
-            var size = 0;
-
-            while (cursor != null)
-            {
-                size++;
-                cursor = cursor.NextNode;
-            }
-
-            return size;
-        }
+            => size;
 
         /// <summary>
         /// Checking the presence of the value in list
         /// </summary>
         /// <param name="value">value to check</param>
-        public bool IsExistValue(int value)
+        public bool Contains(int value)
         {
-            NodeList cursor = head;
+            ListNode cursor = head;
 
             while (cursor != null)
             {
@@ -105,7 +95,12 @@ namespace UniqueListNumber
         /// <param name="index">Searchable index</param>
         public int GetValueByIndex(int index)
         {
-            NodeList cursor = head;
+            if (index > GetSize() || index < 0)
+            {
+                throw new ValueDoesNotExistException();
+            }
+
+            ListNode cursor = head;
             
             while (cursor != null && index != 0)
             {
@@ -122,7 +117,7 @@ namespace UniqueListNumber
         /// <param name="value">Searchable value</param>
         public int GetIndexByValue(int value)
         {
-            NodeList cursor = head;
+            ListNode cursor = head;
             var index = 0;
 
             while (cursor != null)
@@ -145,19 +140,26 @@ namespace UniqueListNumber
         /// <param name="value">Value to delete</param>
         public virtual void DeleteByValue(int value)
         {
+            if (!Contains(value))
+            {
+                throw new ValueDoesNotExistException("There is no such element!");
+            }
+
             if (head.Value == value)
             {
                 head = head.NextNode;
+                size--;
                 return;
             }
 
-            NodeList cursor = head;
+            ListNode cursor = head;
 
             while (cursor.NextNode != null)
             {
                 if (cursor.NextNode.Value == value)
                 {
                     cursor.NextNode = cursor.NextNode.NextNode;
+                    size--;
                     return;
                 }
 
@@ -167,6 +169,7 @@ namespace UniqueListNumber
             if (cursor.Value == value)
             {
                 cursor.NextNode = null;
+                size--;
             }
         }
 
@@ -176,19 +179,26 @@ namespace UniqueListNumber
         /// <param name="index">Index to delete</param>
         public virtual void DeleteByIndex(int index)
         {
+            if (index > GetSize() || index < 0)
+            {
+                throw new ValueDoesNotExistException();
+            }
+
             if (index == 0)
             {
                 head = head.NextNode;
+                size--;
                 return;
             }
 
-            NodeList cursor = head;
+            ListNode cursor = head;
 
             while (cursor.NextNode != null)
             {
                 if (index == 1)
                 {
                     cursor.NextNode = cursor.NextNode.NextNode;
+                    size--;
                     return;
                 }
 
@@ -202,7 +212,7 @@ namespace UniqueListNumber
         /// </summary>
         public void PrintList()
         {
-            NodeList cursor = head;
+            ListNode cursor = head;
 
             while (cursor != null)
             {
@@ -221,7 +231,7 @@ namespace UniqueListNumber
                 throw new IndexOutOfRangeException();
             }
 
-            NodeList cursor = head;
+            ListNode cursor = head;
             var currentIndex = 0;
 
             while (cursor != null)
