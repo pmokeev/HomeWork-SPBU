@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTask", "TestTask\TestTask.csproj", "{49004CFC-68B5-4B1F-940A-C8EC08933B00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorTests", "VectorTests\VectorTests.csproj", "{10D00D6E-F569-4E87-9394-0E7C5EA167E0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49004CFC-68B5-4B1F-940A-C8EC08933B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49004CFC-68B5-4B1F-940A-C8EC08933B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49004CFC-68B5-4B1F-940A-C8EC08933B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49004CFC-68B5-4B1F-940A-C8EC08933B00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10D00D6E-F569-4E87-9394-0E7C5EA167E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10D00D6E-F569-4E87-9394-0E7C5EA167E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10D00D6E-F569-4E87-9394-0E7C5EA167E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10D00D6E-F569-4E87-9394-0E7C5EA167E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67C75292-06D6-4D2D-A6F3-6F04B6C6AC36}
+	EndGlobalSection
+EndGlobal
